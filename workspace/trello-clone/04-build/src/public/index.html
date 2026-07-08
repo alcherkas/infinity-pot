@@ -13,10 +13,19 @@
 
   <main id="app-main">
     <!-- Boards overview: list of boards, empty-state message, create-board control -->
-    <section id="boards-view"></section>
+    <section id="boards-view">
+      <form id="create-board-form">
+        <input id="create-board-input" type="text" placeholder="New board title" autocomplete="off" />
+        <button type="submit">Create board</button>
+      </form>
+      <ul id="boards-list"></ul>
+    </section>
 
     <!-- Single board view: lists + cards for the currently open board -->
-    <section id="board-view" hidden></section>
+    <section id="board-view" hidden>
+      <button id="back-to-boards" type="button">&larr; Boards</button>
+      <h2 id="board-view-title"></h2>
+    </section>
   </main>
 
   <!-- Card detail modal, populated when a card is opened -->

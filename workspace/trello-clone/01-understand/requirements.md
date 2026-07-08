@@ -31,7 +31,7 @@ Build a simple, single-user web app that mimics core Trello functionality: board
 - FR8: Card detail view supporting a free-text description field. Fields autosave on change/blur (no separate "Save" button); closing the modal never discards edits already made. (See open question 6.)
 
 ### Should
-- FR9: Reorder boards on the boards overview page.
+- FR9: Reorder boards on the boards overview page via drag-and-drop (consistent with FR4-FR6), with no separate click-based fallback required since board count is expected to be small.
 - FR10: Basic empty states (no boards yet, no lists yet, no cards yet) with clear call-to-action.
 - FR11: Confirm before destructive actions (delete board/list/card).
 
@@ -47,7 +47,8 @@ Build a simple, single-user web app that mimics core Trello functionality: board
 - Mobile native apps (web-responsive only, if at all).
 
 ## Tech Stack Decision
-- Frontend: plain React SPA, built with Vite. No backend framework or server.
+- Frontend: plain HTML/CSS/JavaScript (no framework, no build step), served by a minimal Node `http` static server. Native HTML5 drag-and-drop. Superseded the original React + Vite sketch once the architecture and first three build tasks confirmed a framework-free build is sufficient and keeps the loop smaller — see `02-design/architecture.md` (turn 1, APPROVED).
+- Testing: Playwright (the app's only devDependency), introduced at task-015.
 - Persistence: browser localStorage only.
 
 ## Non-Functional Requirements

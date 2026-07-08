@@ -21,4 +21,4 @@ Wire up the boards overview page: rendering, create/rename/delete actions, empty
 - No console errors during any of the above interactions.
 
 ## Status
-TODO
+DONE

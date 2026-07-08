@@ -33,3 +33,17 @@ No UI exercised this turn.
 
 **Agent improvements**
 No changes.
+
+## Turn 3
+
+**Done**
+- `developer:task-004` built the boards overview UI (`04-build/src/public/js/render.js`, `events.js`, wiring in `app.js`, containers in `index.html`): create/rename/delete boards, empty state, click-to-navigate to a stub board view showing the board's title.
+- `code-reviewer:task-004` gated: `04-build/reviews/task-004-review.md` — VERDICT: APPROVED (first pass, no bounce). One non-blocking future-hardening note: the delete handler in `events.js:67-72` calls `store.deleteBoard` without a try/catch (unlike create/rename), safe today because delete buttons only render for boards that exist, but flagged for symmetry when confirm-dialogs land at task-011.
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 3, last_action `code-reviewer:task-004`, next `developer:task-015`.
+
+**Walkthrough**
+No UI exercised this turn (no `05-qa/walkthrough/turn-003/` directory produced — no `ui-tester` run yet).
+
+**Agent improvements**
+No changes.
