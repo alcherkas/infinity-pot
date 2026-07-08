@@ -14,9 +14,9 @@ Ordered so the app is startable and runnable end-to-end as early as possible, th
 | 8 | task-007 | M | Card detail modal: open on click, edit title + `description` via `updateCardDescription`, save/close (FR8) | DONE |
 | 9 | task-011 | S | FR11 confirm-before-delete dialogs for board/list/card deletion — cheap, high value (prevents accidental data loss), do right after delete paths exist | DONE |
 | 10 | task-008 | M | Drag-and-drop: `reorderCard` (within list + across lists, FR4/FR5) wired to native HTML5 DnD handlers in `events.js` | DONE |
-| 11 | task-010 | S | FR6a click-based "Move to..." fallback menu on cards (uses `reorderCard`), independent of DnD — cheap safety net for DnD risk in task-008 | TODO |
-| 12 | task-009 | S | Drag-and-drop: `reorderLists` (FR6) wired to DnD on list headers (split from the old task-009; board-tile reordering moved to task-016) | TODO |
-| 13 | task-016 | S | Drag-and-drop: `reorderBoards` (FR9) wired to DnD on the boards overview (split from the old task-009 — independent UI surface from list DnD) | TODO |
+| 11 | task-010 | S | FR6a click-based "Move to..." fallback menu on cards (uses `reorderCard`), independent of DnD — cheap safety net for DnD risk in task-008 | DONE |
+| 12 | task-009 | S | Drag-and-drop: `reorderLists` (FR6) wired to DnD on list headers (split from the old task-009; board-tile reordering moved to task-016) | DONE |
+| 13 | task-016 | S | Drag-and-drop: `reorderBoards` (FR9) wired to DnD on the boards overview (split from the old task-009 — independent UI surface from list DnD) | DONE |
 | 14 | task-012 | S | Could-have: card label/color tag (`setCardLabel`) — field + badge + simple picker | TODO |
 | 15 | task-013 | S | Could-have: card due date (`setCardDueDate`) — field + display + date picker | TODO |
 | 16 | task-014 | S | Could-have: keyword search/filter across cards on a board (`filterCards`) | TODO |

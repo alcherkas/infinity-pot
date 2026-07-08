@@ -159,3 +159,63 @@ No UI exercised this turn — no `05-qa/walkthrough/turn-010/` directory was pro
 
 **Agent improvements**
 No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`). `evolution/weaknesses.md` was rewritten this turn by `harness-miner` (new `architect` and `gap-analyst` sections, both citing specific log-line evidence) — these are candidate lessons for those agents' own next self-reflection, not resolved edits themselves, and no `[PROBATION]` verdicts were resolved in `evolution/ledger.md` this turn (the ledger remains header-only, with zero edit entries).
+
+## Turn 11
+
+**Done**
+- `gap-analyst` reassessed: closed a false 9-turn-recurring gap ("stale no-dependencies line" in `architecture.md`, re-flagged turns 4-10) after re-reading the full file and confirming it was already correctly scoped, and promoted the real, long-overdue gap (`ui-tester` never run) straight to `next` per `evolution/weaknesses.md`'s lesson.
+- `ui-tester` ran for the first time in the project's history: exploratory walkthrough (16 screenshots, `05-qa/walkthrough/turn-011/01-16`) plus a Playwright smoke/journey run, and filed `05-qa/bugs/bug-001.md` — FR6 (list DnD), FR9 (board DnD), and FR6a (click-based move fallback) were all missing from the UI despite store-layer support existing. MCP browser tool failed to launch (no system Chrome, no sudo); ui-tester substituted a script-driven walkthrough using the project's own installed Playwright Chromium, per its own updated definition.
+- `developer:task-009` (list DnD, FR6), `developer:task-016` (board DnD, FR9, split out of the old combined task-009), and `developer:task-010` (FR6a click-based "Move to..." fallback) all built this turn to close bug-001. `code-reviewer:task-009`, `code-reviewer:task-016`, `code-reviewer:task-010` — all VERDICT: APPROVED, first pass, no bounces.
+- `developer:task-010`'s new "Move to..." select initially broke 2/7 existing Playwright tests via a hit-testing/layout collision with the drag handle; caught by running the existing `05-qa` suite (not just a manual smoke check) before finishing, then fixed (lazy option population + fixed-width card-row layout) — suite back to 7/7 before review.
+- `ui-tester` ran again to re-verify bug-001: extended the Playwright suite from 7 to 10 specs (all passing), added 7 more walkthrough screenshots (17-23), and marked `05-qa/bugs/bug-001.md` RESOLVED. Same MCP-browser fallback needed and used again. One test-authoring fix along the way: `locator.dragTo()` was unreliable for the narrow list-header DnD case and was rewritten with manual `mouse.move()` steps (test-tooling fix, not an app fix).
+- `03-plan/backlog.md` updated: task-009, task-010, task-016 all marked DONE.
+- No gate overrides this turn — every review and re-verification passed on the first cycle.
+- `state.json` updated: turn 11, last_action `ui-tester`, next `developer:task-012` (remaining Could-have features; NFR7's unimplemented persistence-failure warning still needs a backlog task per this turn's `turn-plan.md`).
+
+**Walkthrough**
+
+Boards overview and board creation:
+
+![Boards empty state](05-qa/walkthrough/turn-011/01-boards-empty-state.png)
+![Board created](05-qa/walkthrough/turn-011/02-board-created.png)
+
+Lists and cards:
+
+![Board view, no lists yet](05-qa/walkthrough/turn-011/03-board-view-empty-lists.png)
+![Lists created](05-qa/walkthrough/turn-011/04-lists-created.png)
+![Cards created](05-qa/walkthrough/turn-011/05-cards-created.png)
+
+Card detail modal:
+
+![Card modal open](05-qa/walkthrough/turn-011/06-card-modal-open.png)
+![Card modal description typed](05-qa/walkthrough/turn-011/07-card-modal-description-typed.png)
+![Card modal saved and closed](05-qa/walkthrough/turn-011/08-card-modal-saved-closed.png)
+
+Card drag-and-drop:
+
+![Card reordered within list](05-qa/walkthrough/turn-011/09-card-reordered-within-list.png)
+![Card moved to Doing](05-qa/walkthrough/turn-011/10-card-moved-to-doing.png)
+
+List rename, card delete, navigation, persistence, board delete:
+
+![List renamed](05-qa/walkthrough/turn-011/11-list-renamed.png)
+![Card deleted](05-qa/walkthrough/turn-011/12-card-deleted.png)
+![Back to boards overview](05-qa/walkthrough/turn-011/13-back-to-boards-overview.png)
+![Reload persists boards](05-qa/walkthrough/turn-011/14-reload-persistence-boards.png)
+![Reload persists board detail](05-qa/walkthrough/turn-011/15-reload-persistence-board-detail.png)
+![Board deleted, empty state](05-qa/walkthrough/turn-011/16-board-deleted-empty-state.png)
+
+Bug-001 fix re-verification — board reorder (FR9), list reorder (FR6), click-based move fallback (FR6a):
+
+![Three boards created](05-qa/walkthrough/turn-011/17-three-boards-created.png)
+![Boards reordered](05-qa/walkthrough/turn-011/18-boards-reordered.png)
+![Three lists created](05-qa/walkthrough/turn-011/19-three-lists-created.png)
+![Lists reordered, Done first](05-qa/walkthrough/turn-011/20-lists-reordered-done-first.png)
+![Card created in Doing](05-qa/walkthrough/turn-011/21-card-created-in-doing.png)
+![Move to dropdown open](05-qa/walkthrough/turn-011/22-move-to-dropdown-open.png)
+![Card moved via fallback](05-qa/walkthrough/turn-011/23-card-moved-via-fallback.png)
+
+**Agent improvements**
+- `gap-analyst`: added a rule to re-verify inherited multi-turn gaps against the current file before repeating them, and to promote any gap recurring 3+ turns straight to `next` instead of re-flagging it as a footnote — evidence: `evolution/weaknesses.md`'s architect/gap-analyst sections plus this turn's re-read of `architecture.md` showing the "stale no-dependencies line" was already resolved, while the real `ui-tester` gap had gone unpromoted for 5+ turns. [PROBATION logged in `evolution/ledger.md`.]
+- `ui-tester`: added a documented fallback — if the MCP browser fails to launch (no system Chrome, no sudo), drive the walkthrough with a short script using the project's own installed Playwright browser instead, noting the substitution plainly in the report — evidence: `mcp__playwright__browser_navigate` failure this run. [PROBATION logged in `evolution/ledger.md`, resolved **KEPT** this same turn: the second ui-tester run (bug-001 re-verification) hit the identical failure and the documented fallback worked cleanly again, producing 7 more walkthrough screenshots.]
+- `developer`: added "and if `05-qa/` already has an automated test suite, run it too" to the pre-finish verification step — evidence: task-010's new "Move to..." select silently broke 2/7 existing Playwright DnD tests via a hit-testing/layout collision, caught only by running the existing suite (not just a manual smoke check); suite went 7/7 → 5/7 → 7/7 after the fix. [PROBATION logged in `evolution/ledger.md`, verdict pending next run touching `developer.md`.]

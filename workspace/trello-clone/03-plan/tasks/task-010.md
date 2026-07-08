@@ -18,4 +18,4 @@ Provide a non-drag-and-drop way to move/reorder cards (FR6a), as a fallback in c
 - No console errors.
 
 ## Status
-TODO
+DONE

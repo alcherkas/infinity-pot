@@ -77,8 +77,16 @@ body {
   background: #ebecf0;
   border-radius: 4px;
   padding: 0.5rem;
-  min-width: 220px;
-  flex: 0 0 auto;
+  /* Fixed (not shrink-to-fit) width: with `flex: 0 0 auto` the column would
+     auto-size to its content's max-content width, which — once a card row
+     holds title + "Move to..." select + Delete button — would make the
+     column (and therefore the card row) only as wide as those controls,
+     leaving no room for `.card-title`'s flex-grow to push them to the
+     right. A fixed width guarantees the title actually gets the spare
+     space, so a generic "grab the row's center" (native drag, or a test's
+     dragTo()) lands on the title, not on the "Move to..." control. */
+  width: 340px;
+  flex: 0 0 340px;
 }
 
 .list-header {
@@ -110,6 +118,30 @@ body {
 
 .card-row[draggable='true'] {
   cursor: grab;
+}
+
+.card-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.35rem 0.25rem;
+}
+
+/* card-title fills the remaining width so the row's center (where a native
+   drag grab typically starts) stays over the title, not the "Move to..."
+   control next to it. */
+.card-title {
+  flex: 1 1 0%;
+  min-width: 0;
+  display: block;
+  cursor: pointer;
+}
+
+/* task-010: click-based "Move to..." fallback, independent of drag-and-drop */
+.move-card-select {
+  font-size: 0.8rem;
+  max-width: 7rem;
+  flex: 0 0 auto;
 }
 
 /* Card detail modal (task-007, FR8) */

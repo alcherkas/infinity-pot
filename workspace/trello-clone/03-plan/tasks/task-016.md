@@ -16,4 +16,4 @@ Implement board reordering on the overview page (FR9) via native HTML5 drag-and-
 - No console errors.
 
 ## Status
-TODO
+DONE

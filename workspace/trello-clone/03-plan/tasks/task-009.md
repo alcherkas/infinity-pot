@@ -17,4 +17,15 @@ Implement list reordering within a board (FR6) via native HTML5 drag-and-drop. (
 - No console errors.
 
 ## Status
-TODO
+DONE
+
+## Implementation notes
+- `store.reorderLists(boardId, listId, toIndex)` already existed (added in task-005); no changes needed there.
+- `render.js`: list headers now have `draggable="true"` and `data-list-id`.
+- `events.js`: added `wireListDragAndDrop` using a separate `draggedListId` variable
+  from card DnD's `draggedCardId`. Drag starts are disambiguated by DOM structure:
+  list drags start on `.list-header`, card drags start on `.card-row` (a sibling of
+  the header, not a descendant), so the two `closest()` checks never both match the
+  same drag gesture, and each handler bails out early when its own dragged-id is null.
+- Verified: `node --check` on all three touched files, manual server start + curl,
+  and the full existing Playwright suite (05-qa) — 7/7 passed, no regressions.

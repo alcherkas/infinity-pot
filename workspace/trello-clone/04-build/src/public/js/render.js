@@ -24,13 +24,50 @@ export function renderBoardsView(state) {
   list.innerHTML = boards
     .map(
       (board) => `
-      <li class="board-row" data-board-id="${board.id}">
+      <li class="board-row" draggable="true" data-board-id="${board.id}">
         <span class="board-title" data-action="open-board" data-board-id="${board.id}">${escapeHtml(board.title)}</span>
         <button type="button" data-action="rename-board" data-board-id="${board.id}">Rename</button>
         <button type="button" data-action="delete-board" data-board-id="${board.id}">Delete</button>
       </li>`
     )
     .join('');
+}
+
+// FR6a: build the "Move to..." <select> options for a card — every list on the
+// board, with every valid target position within that list. Values are
+// encoded as "toListId::toIndex" so events.js can parse and call
+// store.reorderCard(cardId, toListId, toIndex) — the same fn DnD uses.
+// Exported (not inlined at render time) so events.js can populate a card's
+// options lazily, on open, rather than baking every other list's title into
+// every card's DOM up front — that would make list titles appear as text
+// inside every unrelated card row and break `hasText`-based lookups in tests.
+export function renderMoveToOptions(boardLists, card) {
+  return boardLists
+    .map((list) => {
+      // Same list: as many valid target slots as existing cards (moving within).
+      // Different list: one extra slot at the end (inserting a new card).
+      const positions = list.id === card.listId ? list.cardCount : list.cardCount + 1;
+      const opts = [];
+      for (let i = 0; i < positions; i += 1) {
+        const isCurrent = list.id === card.listId && list.cards[i] && list.cards[i].id === card.id;
+        if (isCurrent) continue;
+        opts.push(
+          `<option value="${list.id}::${i}">${escapeHtml(list.title)} — position ${i + 1}</option>`
+        );
+      }
+      return opts.join('');
+    })
+    .join('');
+}
+
+// Compute the board's lists (each with its sorted cards + count) for a given
+// listId, used to lazily build "Move to..." options on demand.
+export function computeBoardLists(state, boardId) {
+  const lists = state.lists.filter((l) => l.boardId === boardId).sort((a, b) => a.order - b.order);
+  return lists.map((list) => {
+    const listCards = state.cards.filter((c) => c.listId === list.id).sort((a, b) => a.order - b.order);
+    return { id: list.id, title: list.title, cards: listCards, cardCount: listCards.length };
+  });
 }
 
 // FR3, FR10: render a list's cards (or empty state with create-card affordance).
@@ -45,6 +82,9 @@ function renderCards(state, listId) {
             (card) => `
       <li class="card-row" draggable="true" data-card-id="${card.id}">
         <span class="card-title" data-action="open-card" data-card-id="${card.id}">${escapeHtml(card.title)}</span>
+        <select class="move-card-select" data-action="move-card-select" data-card-id="${card.id}" aria-label="Move card">
+          <option value="" selected disabled>Move to...</option>
+        </select>
         <button type="button" data-action="delete-card" data-card-id="${card.id}">Delete</button>
       </li>`
           )
@@ -108,7 +148,7 @@ export function renderBoardView(state, boardId) {
     .map(
       (list) => `
       <div class="list-column" data-list-id="${list.id}">
-        <div class="list-header">
+        <div class="list-header" draggable="true" data-list-id="${list.id}">
           <span class="list-title" data-action="rename-list" data-list-id="${list.id}">${escapeHtml(list.title)}</span>
           <button type="button" data-action="delete-list" data-list-id="${list.id}">Delete</button>
         </div>

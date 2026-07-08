@@ -118,6 +118,119 @@ function wireCardDragAndDrop(listsContainer) {
   });
 }
 
+// FR6: native HTML5 drag-and-drop for list reordering within a board.
+// Uses a separate dragged-id variable from card DnD so the two never interfere:
+// list drags start on `.list-header`, card drags start on `.card-row` (a sibling,
+// not a descendant, of the header), so `closest()` checks never match both.
+let draggedListId = null;
+
+function computeListDropIndex(listsContainerEl, clientX) {
+  const columns = [...listsContainerEl.querySelectorAll('.list-column')];
+  for (let i = 0; i < columns.length; i += 1) {
+    const rect = columns[i].getBoundingClientRect();
+    const midpoint = rect.left + rect.width / 2;
+    if (clientX < midpoint) return i;
+  }
+  return columns.length;
+}
+
+function wireListDragAndDrop(listsContainer) {
+  listsContainer.addEventListener('dragstart', (event) => {
+    const header = event.target.closest('.list-header');
+    if (!header) return;
+    draggedListId = header.dataset.listId;
+    event.dataTransfer.effectAllowed = 'move';
+    try {
+      event.dataTransfer.setData('text/plain', draggedListId);
+    } catch (err) {
+      // Some browsers restrict setData in certain contexts; draggedListId fallback still works.
+    }
+  });
+
+  listsContainer.addEventListener('dragend', () => {
+    draggedListId = null;
+    listsContainer.classList.remove('list-drag-over');
+  });
+
+  listsContainer.addEventListener('dragover', (event) => {
+    if (!draggedListId) return;
+    if (!event.target.closest('.list-column') && event.target !== listsContainer) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  });
+
+  listsContainer.addEventListener('drop', (event) => {
+    if (!draggedListId) return;
+    if (!event.target.closest('.list-column') && event.target !== listsContainer) return;
+    event.preventDefault();
+    const toIndex = computeListDropIndex(listsContainer, event.clientX);
+    const listId = draggedListId;
+    draggedListId = null;
+    try {
+      store.reorderLists(currentBoardId, listId, toIndex);
+    } catch (err) {
+      console.warn('reorderLists failed', err);
+      return;
+    }
+    rerenderBoard();
+  });
+}
+
+// FR9: native HTML5 drag-and-drop for board reordering on the overview page.
+let draggedBoardId = null;
+
+function computeBoardDropIndex(boardsListEl, clientY) {
+  const rows = [...boardsListEl.querySelectorAll('.board-row')];
+  for (let i = 0; i < rows.length; i += 1) {
+    const rect = rows[i].getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    if (clientY < midpoint) return i;
+  }
+  return rows.length;
+}
+
+function wireBoardDragAndDrop(boardsList) {
+  boardsList.addEventListener('dragstart', (event) => {
+    const boardRow = event.target.closest('.board-row');
+    if (!boardRow) return;
+    draggedBoardId = boardRow.dataset.boardId;
+    event.dataTransfer.effectAllowed = 'move';
+    try {
+      event.dataTransfer.setData('text/plain', draggedBoardId);
+    } catch (err) {
+      // Some browsers restrict setData in certain contexts; draggedBoardId fallback still works.
+    }
+  });
+
+  boardsList.addEventListener('dragend', () => {
+    draggedBoardId = null;
+    boardsList.classList.remove('drag-over');
+  });
+
+  boardsList.addEventListener('dragover', (event) => {
+    if (!draggedBoardId) return;
+    if (!event.target.closest('.board-row') && event.target !== boardsList) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+  });
+
+  boardsList.addEventListener('drop', (event) => {
+    if (!draggedBoardId) return;
+    if (!event.target.closest('.board-row') && event.target !== boardsList) return;
+    event.preventDefault();
+    const toIndex = computeBoardDropIndex(boardsList, event.clientY);
+    const boardId = draggedBoardId;
+    draggedBoardId = null;
+    try {
+      store.reorderBoards(boardId, toIndex);
+    } catch (err) {
+      console.warn('reorderBoards failed', err);
+      return;
+    }
+    rerenderBoards();
+  });
+}
+
 export function init() {
   const createForm = document.getElementById('create-board-form');
   const createInput = document.getElementById('create-board-input');
@@ -177,6 +290,8 @@ export function init() {
     showBoardsView();
   });
 
+  wireBoardDragAndDrop(boardsList);
+
   const createListForm = document.getElementById('create-list-form');
   const createListInput = document.getElementById('create-list-input');
   const listsContainer = document.getElementById('lists-container');
@@ -196,6 +311,7 @@ export function init() {
   });
 
   wireCardDragAndDrop(listsContainer);
+  wireListDragAndDrop(listsContainer);
 
   listsContainer.addEventListener('click', (event) => {
     const target = event.target.closest('[data-action]');
@@ -243,6 +359,44 @@ export function init() {
       rerenderBoard();
       return;
     }
+  });
+
+  // FR6a: click-based "Move to..." fallback — works even if DnD is absent/broken,
+  // calling the exact same store.reorderCard fn as the drag-and-drop path (task-008).
+  // Options are populated lazily (on focus, right before the dropdown opens)
+  // rather than baked into every card's DOM up front, so a list's title
+  // doesn't leak into the text content of every unrelated card row.
+  listsContainer.addEventListener(
+    'focus',
+    (event) => {
+      const select = event.target.closest('[data-action="move-card-select"]');
+      if (!select || select.dataset.populated) return;
+      select.dataset.populated = 'true';
+      const { cardId } = select.dataset;
+      const state = store.getState();
+      const card = state.cards.find((c) => c.id === cardId);
+      if (!card || !currentBoardId) return;
+      const boardLists = render.computeBoardLists(state, currentBoardId);
+      select.insertAdjacentHTML('beforeend', render.renderMoveToOptions(boardLists, card));
+    },
+    true
+  );
+
+  listsContainer.addEventListener('change', (event) => {
+    const select = event.target.closest('[data-action="move-card-select"]');
+    if (!select) return;
+    const { cardId } = select.dataset;
+    const [toListId, toIndexRaw] = select.value.split('::');
+    const toIndex = Number(toIndexRaw);
+    select.value = '';
+    if (!toListId || Number.isNaN(toIndex)) return;
+    try {
+      store.reorderCard(cardId, toListId, toIndex);
+    } catch (err) {
+      console.warn('reorderCard failed', err);
+      return;
+    }
+    rerenderBoard();
   });
 
   listsContainer.addEventListener('submit', (event) => {
