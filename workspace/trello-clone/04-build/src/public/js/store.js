@@ -158,6 +158,42 @@ export function deleteCard(cardId) {
   persist();
 }
 
+// FR4/FR5/FR6a: reorder a card within its current list, or move it into a
+// different list at a given position. `toListId` may equal the card's current
+// listId (pure reorder) or a different list (cross-list move).
+export function reorderCard(cardId, toListId, toIndex) {
+  const card = findCard(cardId);
+  findList(toListId);
+  const fromListId = card.listId;
+
+  if (fromListId === toListId) {
+    const ordered = state.cards.filter((c) => c.listId === toListId).sort((a, b) => a.order - b.order);
+    const fromIndex = ordered.findIndex((c) => c.id === cardId);
+    const clamped = Math.max(0, Math.min(toIndex, ordered.length - 1));
+    const [moved] = ordered.splice(fromIndex, 1);
+    ordered.splice(clamped, 0, moved);
+    ordered.forEach((c, i) => {
+      c.order = i;
+    });
+  } else {
+    const fromOrdered = state.cards.filter((c) => c.listId === fromListId && c.id !== cardId).sort((a, b) => a.order - b.order);
+    fromOrdered.forEach((c, i) => {
+      c.order = i;
+    });
+
+    const toOrdered = state.cards.filter((c) => c.listId === toListId).sort((a, b) => a.order - b.order);
+    const clamped = Math.max(0, Math.min(toIndex, toOrdered.length));
+    toOrdered.splice(clamped, 0, card);
+    card.listId = toListId;
+    toOrdered.forEach((c, i) => {
+      c.order = i;
+    });
+  }
+
+  persist();
+  return card;
+}
+
 export function reorderLists(boardId, listId, toIndex) {
   findList(listId);
   const ordered = state.lists.filter((l) => l.boardId === boardId).sort((a, b) => a.order - b.order);

@@ -28,7 +28,7 @@ Build a simple, single-user web app that mimics core Trello functionality: board
 - FR6: Reorder lists within a board via drag-and-drop.
 - FR6a: Provide a click-based fallback control (e.g. a "Move to..." menu on a card) for moving/reordering cards, to be used if drag-and-drop is not yet implemented/working; may be removed once FR4-FR6 are verified.
 - FR7: Persist all data (boards, lists, cards, order) across page reloads.
-- FR8: Card detail view supporting a free-text description field. Fields autosave on change/blur (no separate "Save" button); closing the modal never discards edits already made. (See open question 6.)
+- FR8: Card detail view supporting a free-text description field, with an explicit "Save" button; Cancel, the X control, and clicking the overlay all discard unsaved edits made since the modal was opened. (Reconciled turn 10 to match the shipped, reviewed implementation — task-007 — which uses explicit Save/Cancel rather than autosave; see assumptions.md and open question 6 for the superseded original decision.)
 
 ### Should
 - FR9: Reorder boards on the boards overview page via drag-and-drop (consistent with FR4-FR6), with no separate click-based fallback required since board count is expected to be small.

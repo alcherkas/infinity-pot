@@ -101,6 +101,17 @@ body {
   min-height: 1.5rem;
 }
 
+/* task-008: visual feedback while dragging a card over a valid drop target */
+.cards-list.drag-over {
+  background: rgba(9, 30, 66, 0.08);
+  outline: 2px dashed #6b7280;
+  outline-offset: -2px;
+}
+
+.card-row[draggable='true'] {
+  cursor: grab;
+}
+
 /* Card detail modal (task-007, FR8) */
 #card-modal {
   position: fixed;

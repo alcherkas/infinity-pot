@@ -16,7 +16,7 @@
    ANSWERED: Drag-and-drop is the primary interaction (FR4-FR6) but ship with a click-based fallback (e.g. "Move to..." menu) if DnD implementation risks stalling the first buildable release. Fallback control can be dropped once DnD is verified working.
 
 6. Card detail modal (FR8): should edits save on close (with an explicit Save action), or autosave as the user types/blurs fields, so closing never discards in-progress edits?
-   ANSWERED: Confirmed — autosave on change/blur, no separate Save button; closing the modal never discards data. This is simplest for the user (no extra click, no "did I save?" anxiety) and matches Trello's own behavior, so the suggested default stands as final. (Already reflected in requirements.md FR8.)
+   ANSWERED (turn 10, superseding the original answer): Explicit Save button; Cancel/X/overlay-close discard unsaved edits. The originally-suggested autosave default was never built — task-007 shipped Save/Cancel instead and was reviewed and approved — so requirements.md FR8 is now reconciled to match the shipped, working behavior rather than rebuilding autosave to match the old guess.
 
 7. What is the required browser/device support matrix for drag-and-drop (FR4-FR6), given known DnD quirks (e.g., Safari drag-image rendering, no native HTML5 DnD on touch devices)?
    ANSWERED: Confirmed — mouse-based DnD on latest desktop Chrome, Firefox, and Safari only; touch/mobile relies on the FR6a click-based fallback. This is a single-user desktop tool for v1; chasing full touch DnD now would burn build-loop budget on a device class not in scope. (Already reflected in requirements.md NFR6.)

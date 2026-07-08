@@ -57,6 +57,67 @@ function saveCardModal(cardId) {
   rerenderBoard();
 }
 
+// FR4/FR5: native HTML5 drag-and-drop for card reordering/moving.
+let draggedCardId = null;
+
+function computeDropIndex(cardsListEl, clientY) {
+  const rows = [...cardsListEl.querySelectorAll('.card-row')];
+  for (let i = 0; i < rows.length; i += 1) {
+    const rect = rows[i].getBoundingClientRect();
+    const midpoint = rect.top + rect.height / 2;
+    if (clientY < midpoint) return i;
+  }
+  return rows.length;
+}
+
+function wireCardDragAndDrop(listsContainer) {
+  listsContainer.addEventListener('dragstart', (event) => {
+    const cardRow = event.target.closest('.card-row');
+    if (!cardRow) return;
+    draggedCardId = cardRow.dataset.cardId;
+    event.dataTransfer.effectAllowed = 'move';
+    try {
+      event.dataTransfer.setData('text/plain', draggedCardId);
+    } catch (err) {
+      // Some browsers restrict setData in certain contexts; draggedCardId fallback still works.
+    }
+  });
+
+  listsContainer.addEventListener('dragend', () => {
+    draggedCardId = null;
+    listsContainer.querySelectorAll('.cards-list.drag-over').forEach((el) => el.classList.remove('drag-over'));
+  });
+
+  listsContainer.addEventListener('dragover', (event) => {
+    const cardsList = event.target.closest('.cards-list');
+    if (!cardsList || !draggedCardId) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = 'move';
+    listsContainer.querySelectorAll('.cards-list.drag-over').forEach((el) => {
+      if (el !== cardsList) el.classList.remove('drag-over');
+    });
+    cardsList.classList.add('drag-over');
+  });
+
+  listsContainer.addEventListener('drop', (event) => {
+    const cardsList = event.target.closest('.cards-list');
+    if (!cardsList || !draggedCardId) return;
+    event.preventDefault();
+    cardsList.classList.remove('drag-over');
+    const toListId = cardsList.dataset.listId;
+    const toIndex = computeDropIndex(cardsList, event.clientY);
+    const cardId = draggedCardId;
+    draggedCardId = null;
+    try {
+      store.reorderCard(cardId, toListId, toIndex);
+    } catch (err) {
+      console.warn('reorderCard failed', err);
+      return;
+    }
+    rerenderBoard();
+  });
+}
+
 export function init() {
   const createForm = document.getElementById('create-board-form');
   const createInput = document.getElementById('create-board-input');
@@ -133,6 +194,8 @@ export function init() {
     createListInput.value = '';
     rerenderBoard();
   });
+
+  wireCardDragAndDrop(listsContainer);
 
   listsContainer.addEventListener('click', (event) => {
     const target = event.target.closest('[data-action]');

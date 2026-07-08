@@ -20,4 +20,4 @@ Implement card reordering within a list and moving cards between lists via nativ
 - No console errors during drag operations.
 
 ## Status
-TODO
+DONE

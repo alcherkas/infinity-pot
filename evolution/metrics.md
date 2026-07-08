@@ -42,3 +42,9 @@ trello-clone turn 008 — code-reviewer:task-007 — n/a
 trello-clone turn 9 — gap-analyst — n/a
 trello-clone turn 9 — developer:task-011 — approved_first_pass
 trello-clone turn 9 — code-reviewer:task-011 — approved_first_pass
+trello-clone turn 010 — gap-analyst — n/a
+trello-clone turn 010 — harness-miner — n/a
+trello-clone turn 010 — requirement-refiner — n/a
+trello-clone turn 010 — product-owner — n/a
+trello-clone turn 010 — developer:task-008 — approved_first_pass
+trello-clone turn 010 — code-reviewer:task-008 — approved_first_pass

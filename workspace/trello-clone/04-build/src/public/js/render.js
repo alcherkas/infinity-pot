@@ -43,7 +43,7 @@ function renderCards(state, listId) {
       : cards
           .map(
             (card) => `
-      <li class="card-row" data-card-id="${card.id}">
+      <li class="card-row" draggable="true" data-card-id="${card.id}">
         <span class="card-title" data-action="open-card" data-card-id="${card.id}">${escapeHtml(card.title)}</span>
         <button type="button" data-action="delete-card" data-card-id="${card.id}">Delete</button>
       </li>`

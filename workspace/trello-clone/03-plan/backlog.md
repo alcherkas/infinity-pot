@@ -13,7 +13,7 @@ Ordered so the app is startable and runnable end-to-end as early as possible, th
 | 7 | task-006 | M | `store.js` cards: `createCard`, `renameCard`, `deleteCard`; board view UI renders cards within lists with create/rename/delete | DONE |
 | 8 | task-007 | M | Card detail modal: open on click, edit title + `description` via `updateCardDescription`, save/close (FR8) | DONE |
 | 9 | task-011 | S | FR11 confirm-before-delete dialogs for board/list/card deletion — cheap, high value (prevents accidental data loss), do right after delete paths exist | DONE |
-| 10 | task-008 | M | Drag-and-drop: `reorderCard` (within list + across lists, FR4/FR5) wired to native HTML5 DnD handlers in `events.js` | TODO |
+| 10 | task-008 | M | Drag-and-drop: `reorderCard` (within list + across lists, FR4/FR5) wired to native HTML5 DnD handlers in `events.js` | DONE |
 | 11 | task-010 | S | FR6a click-based "Move to..." fallback menu on cards (uses `reorderCard`), independent of DnD — cheap safety net for DnD risk in task-008 | TODO |
 | 12 | task-009 | S | Drag-and-drop: `reorderLists` (FR6) wired to DnD on list headers (split from the old task-009; board-tile reordering moved to task-016) | TODO |
 | 13 | task-016 | S | Drag-and-drop: `reorderBoards` (FR9) wired to DnD on the boards overview (split from the old task-009 — independent UI surface from list DnD) | TODO |
