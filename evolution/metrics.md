@@ -21,3 +21,5 @@ trello-clone turn 001 — developer:task-001 — approved_first_pass
 trello-clone turn 001 — code-reviewer:task-001 — n/a
 trello-clone turn 001 — developer:task-002 — approved_first_pass
 trello-clone turn 001 — code-reviewer:task-002 — n/a
+trello-clone turn 002 — developer:task-003 — approved_first_pass
+trello-clone turn 002 — code-reviewer:task-003 — n/a

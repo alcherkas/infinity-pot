@@ -19,4 +19,4 @@ Implement the in-memory store's board-level state and mutations, write-through p
 - `store.getState()` returns the current `{boards, lists, cards}` object matching data-model.md shapes.
 
 ## Status
-TODO
+DONE

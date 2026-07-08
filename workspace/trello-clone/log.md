@@ -19,3 +19,17 @@ No UI exercised this turn.
 
 **Agent improvements**
 No changes.
+
+## Turn 2
+
+**Done**
+- `developer:task-003` built the board store (`04-build/src/public/js/store.js`): `getState`, `createBoard`, `renameBoard`, `deleteBoard`, `reorderBoards`, write-through to `storage.js`.
+- `code-reviewer:task-003` gated: `04-build/reviews/task-003-review.md` — VERDICT: APPROVED (first pass, no bounce).
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 2, last_action `code-reviewer:task-003`, next `developer:task-004`.
+
+**Walkthrough**
+No UI exercised this turn.
+
+**Agent improvements**
+No changes.

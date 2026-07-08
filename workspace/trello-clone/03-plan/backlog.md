@@ -6,7 +6,7 @@ Ordered so the app is startable and runnable end-to-end as early as possible, th
 |---|---|---|---|---|
 | 1 | task-001 | S | Skeleton: `package.json`, static `server.js`, `index.html`/`app.css` shell, `app.js` boot that renders "No boards yet" — `npm start` serves a working empty-state page | DONE |
 | 2 | task-002 | S | `storage.js`: load/save versioned localStorage blob, empty-state fallback, corrupt-data handling | DONE |
-| 3 | task-003 | M | `store.js` boards: `getState`, `createBoard`, `renameBoard`, `deleteBoard`, `reorderBoards`; wired to storage write-through | TODO |
+| 3 | task-003 | M | `store.js` boards: `getState`, `createBoard`, `renameBoard`, `deleteBoard`, `reorderBoards`; wired to storage write-through | DONE |
 | 4 | task-004 | M | Boards overview UI: `render.js`/`events.js` for create/rename/delete board, empty state, list of boards, click to open a board (board view can be a stub) | TODO |
 | 5 | task-015 | M | Playwright test harness setup: `05-qa/` config, `webServer` pointing at `server.js`, one smoke test (load page, create board) — moved earlier to catch regressions from the first real UI onward | TODO |
 | 6 | task-005 | M | `store.js` lists: `createList`, `renameList`, `deleteList` (cascades cards), `reorderLists`; board view UI renders lists with create/rename/delete | TODO |

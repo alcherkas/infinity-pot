@@ -28,7 +28,7 @@ Build a simple, single-user web app that mimics core Trello functionality: board
 - FR6: Reorder lists within a board via drag-and-drop.
 - FR6a: Provide a click-based fallback control (e.g. a "Move to..." menu on a card) for moving/reordering cards, to be used if drag-and-drop is not yet implemented/working; may be removed once FR4-FR6 are verified.
 - FR7: Persist all data (boards, lists, cards, order) across page reloads.
-- FR8: Card detail view supporting a free-text description field.
+- FR8: Card detail view supporting a free-text description field. Fields autosave on change/blur (no separate "Save" button); closing the modal never discards edits already made. (See open question 6.)
 
 ### Should
 - FR9: Reorder boards on the boards overview page.
@@ -56,6 +56,8 @@ Build a simple, single-user web app that mimics core Trello functionality: board
 - NFR3: No login required — app works immediately on first load.
 - NFR4: Data persists locally (e.g., browser storage) unless a backend is explicitly built; no requirement for cloud sync in this version.
 - NFR5: Codebase small enough to be built and reviewed incrementally by the tiny build loop (prefer a single frontend app over a distributed system).
+- NFR6: Drag-and-drop is required to work correctly on latest desktop Chrome, Firefox, and Safari using mouse input. Touch-based drag-and-drop on mobile/tablet is not required for this version (FR6a's click-based fallback covers non-mouse input instead). (See open question 7.)
+- NFR7: If persisting to localStorage fails (e.g., quota exceeded, private-browsing storage disabled), the app must show a visible, non-blocking warning to the user rather than silently losing data or crashing; in-memory state should remain usable for the current session even if persistence fails. (See open question 8.)
 
 ## Out of Scope
 - Authentication, authorization, multi-tenancy.
