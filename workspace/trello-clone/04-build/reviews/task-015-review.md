@@ -1,0 +1,13 @@
+VERDICT: APPROVED
+
+## Findings
+
+1. `05-qa/playwright.config.js:24-30` — `webServer` runs `node 04-build/src/server.js` with `PORT=4173`, `reuseExistingServer: !process.env.CI`, `timeout: 15_000`. Matches task's requirement to auto-start the dev server; `04-build/src/server.js:9` reads `process.env.PORT || 3000`, so the override is honored correctly.
+2. `05-qa/tests/smoke.spec.js:12-31` — smoke test covers exactly the specified path: empty state (`#boards-list` contains "No boards yet"), create a board via the real UI form (`#create-board-input` + `#create-board-form button[type=submit]`), verify it appears, reload, verify it persists. Selectors (`#boards-list`, `#create-board-input`, `#create-board-form`, `.board-row`) all match the actual markup/render code (`04-build/src/public/index.html:17-21`, `04-build/src/public/js/render.js:20,27`) — not guessed/stale selectors.
+3. `05-qa/tests/smoke.spec.js:6-9` — `beforeEach` clears `localStorage` before each run, avoiding cross-run/cross-test-file state bleed, which is a reasonable and non-hacky way to keep the test idempotent.
+4. `05-qa/package.json:9-11` — adds `@playwright/test` as the only devDependency and a `test` script (`playwright test`), as required. This is a deliberate, documented exception to the "no dependencies" architecture principle, called out explicitly in `02-design/architecture.md:87` (Tech Stack table) and flagged as a known risk in `03-plan/backlog.md:40` — not an undocumented deviation.
+5. `05-qa/node_modules/` is present on disk (from the verification `npm install` run) but is excluded by the repo-root `.gitignore:1` (`node_modules/`), which applies recursively to any nested `node_modules` directory — so this won't get committed. `playwright-report/` and `test-results/` are also covered (`.gitignore:3-4`). No stray build artifacts will land in git.
+6. `04-build/src/README.md:16-26` documents the exact run sequence (`npm install`, `playwright install chromium`, `npm test`) matching the task notes' locally-verified steps. Good handoff for future turns/agents.
+7. Acceptance criterion "no leftover server process after the run" is asserted in the task notes as manually verified; nothing in the config contradicts this (`reuseExistingServer` only reuses a server already running on that port during local dev — it doesn't leave one running after `playwright test` exits, since Playwright owns and tears down the process it spawned).
+
+No bugs, no leftover debug code (no `console.log`/`only`/`skip` in the spec), and the implementation is scoped tightly to the task's stated files. Acceptance criteria are met.

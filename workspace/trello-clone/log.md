@@ -47,3 +47,19 @@ No UI exercised this turn (no `05-qa/walkthrough/turn-003/` directory produced �
 
 **Agent improvements**
 No changes.
+
+## Turn 4
+
+**Done**
+- `gap-analyst` reassessed and confirmed `developer:task-015` as next action (Playwright harness), flagging that no execution/UI verification had touched the app across three turns of "approved first pass" reviews.
+- `developer:task-015` built the Playwright test harness: `05-qa/playwright.config.js` (webServer auto-starts `04-build/src/server.js` on port 4173), `05-qa/tests/smoke.spec.js` (empty state → create board → verify → reload → verify persistence), `05-qa/package.json`/`package-lock.json` (`@playwright/test` devDependency + `test` script), and a doc update to `04-build/src/README.md` with the run instructions.
+- `code-reviewer:task-015` gated: `04-build/reviews/task-015-review.md` — VERDICT: APPROVED (first pass, no bounce). Confirmed selectors match real markup/render code, the new dependency is a documented exception to the "no dependencies" architecture principle (already called out in `architecture.md`'s Tech Stack table and `backlog.md`'s Risks section), and `node_modules`/`test-results`/`playwright-report` are all covered by the root `.gitignore` so nothing extraneous will be committed.
+- `03-plan/backlog.md` updated: task-015 marked DONE.
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 4, last_action `code-reviewer:task-015`, next `developer:task-005`.
+
+**Walkthrough**
+No UI exercised this turn (task-015 built the test harness itself; no `ui-tester` run or `05-qa/walkthrough/turn-004/` directory produced this turn — the smoke test now exists for a future turn to run and report on).
+
+**Agent improvements**
+No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).

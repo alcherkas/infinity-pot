@@ -1,0 +1,12 @@
+{
+  "name": "trello-clone-qa",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Playwright test harness for trello-clone (drives the app in 04-build/src via a real browser)",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.47.0"
+  }
+}
