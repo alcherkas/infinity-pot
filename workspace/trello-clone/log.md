@@ -219,3 +219,24 @@ Bug-001 fix re-verification — board reorder (FR9), list reorder (FR6), click-b
 - `gap-analyst`: added a rule to re-verify inherited multi-turn gaps against the current file before repeating them, and to promote any gap recurring 3+ turns straight to `next` instead of re-flagging it as a footnote — evidence: `evolution/weaknesses.md`'s architect/gap-analyst sections plus this turn's re-read of `architecture.md` showing the "stale no-dependencies line" was already resolved, while the real `ui-tester` gap had gone unpromoted for 5+ turns. [PROBATION logged in `evolution/ledger.md`.]
 - `ui-tester`: added a documented fallback — if the MCP browser fails to launch (no system Chrome, no sudo), drive the walkthrough with a short script using the project's own installed Playwright browser instead, noting the substitution plainly in the report — evidence: `mcp__playwright__browser_navigate` failure this run. [PROBATION logged in `evolution/ledger.md`, resolved **KEPT** this same turn: the second ui-tester run (bug-001 re-verification) hit the identical failure and the documented fallback worked cleanly again, producing 7 more walkthrough screenshots.]
 - `developer`: added "and if `05-qa/` already has an automated test suite, run it too" to the pre-finish verification step — evidence: task-010's new "Move to..." select silently broke 2/7 existing Playwright DnD tests via a hit-testing/layout collision, caught only by running the existing suite (not just a manual smoke check); suite went 7/7 → 5/7 → 7/7 after the fix. [PROBATION logged in `evolution/ledger.md`, verdict pending next run touching `developer.md`.]
+
+## Turn 12
+
+**Done**
+- `tech-writer` wrote `06-ship/user-docs.md` (a full user guide: starting the app, boards/lists/cards CRUD, drag-and-drop reordering, the click-based "Move to..." fallback, and persistence behavior) and refreshed `04-build/src/README.md` (accurate setup/start/test instructions, including the separate `05-qa/` test package and the 10-spec suite it now runs).
+- `security-reviewer` reviewed `04-build/src/` against `02-design/api.md` and wrote `06-ship/security-review.md` — **VERDICT: APPROVED**. Confirmed XSS mitigation via consistent `escapeHtml()` use, a correct path-traversal guard in the static file server, no secrets/external dependencies, and flagged two informational (non-blocking) items: no schema validation on persisted localStorage records (fine at current single-device scope), and a documentation/implementation drift where `api.md` describes `setCardLabel`/`setCardDueDate`/`filterCards` (FR12-14, Could-have, unbuilt) that `store.js` does not yet implement.
+- `tech-writer` and `security-reviewer` ran in parallel per the parallelism rule (no dependency between them).
+- No gate overrides this turn — `security-reviewer`'s review passed on the first pass (APPROVED).
+- Turn 12 did **not** build `developer:task-017` (NFR7 persistence-failure warning) as `turn-plan.md` recommended as a followup — that remains open for the next turn; no task-017 file or code exists yet.
+- Probation resolution: `gap-analyst`'s turn-11 edit verdict recorded in `evolution/ledger.md` this turn — **KEPT** ("turn 12's run applied the rule as intended... correctly identifying [`state.json.next`] as stale against the now-feature-complete reality and recommending `tech-writer`/`security-reviewer` instead").
+- No new self-reflection edits were made by `tech-writer` or `security-reviewer` this turn (no citable bounce/finding against their own definitions) — a no-op reflection turn for both, consistent with "most runs should be no-ops."
+- `state.json` updated: turn 12, last_action `security-reviewer`, next `release-manager`.
+
+**Walkthrough**
+
+No UI exercised this turn.
+
+**Agent improvements**
+- No new definition edits this turn.
+- Probation verdict resolved in `evolution/ledger.md`: `gap-analyst`'s turn-11 edit — **KEPT** — "turn 12's run applied the rule as intended: no stale gap was repeated, and this run went further by treating `state.json.next` itself (`developer:task-012`) as a pointer to re-verify rather than rubber-stamp, correctly identifying it as stale against the now-feature-complete reality and recommending `tech-writer`/`security-reviewer` instead."
+- `developer`'s turn-11 probation entry (test-suite-run addition) remains pending — no `developer` run occurred this turn to judge it against.

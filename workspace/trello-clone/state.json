@@ -1,9 +1,9 @@
 {
   "project": "trello-clone",
-  "turn": 11,
+  "turn": 12,
   "status": "in-progress",
-  "last_action": "ui-tester",
-  "next": "developer:task-012",
+  "last_action": "security-reviewer",
+  "next": "release-manager",
   "mode": "autonomous",
   "max_gate_iterations": 3
 }
