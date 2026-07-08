@@ -33,7 +33,32 @@ export function renderBoardsView(state) {
     .join('');
 }
 
-// FR2, FR6, FR10: render a board's lists (card rendering stubbed until task-006).
+// FR3, FR10: render a list's cards (or empty state with create-card affordance).
+function renderCards(state, listId) {
+  const cards = state.cards.filter((c) => c.listId === listId).sort((a, b) => a.order - b.order);
+
+  const cardsHtml =
+    cards.length === 0
+      ? '<li class="empty-state">No cards yet</li>'
+      : cards
+          .map(
+            (card) => `
+      <li class="card-row" data-card-id="${card.id}">
+        <span class="card-title" data-action="rename-card" data-card-id="${card.id}">${escapeHtml(card.title)}</span>
+        <button type="button" data-action="delete-card" data-card-id="${card.id}">Delete</button>
+      </li>`
+          )
+          .join('');
+
+  return `
+    <ul class="cards-list" data-list-id="${listId}">${cardsHtml}</ul>
+    <form class="create-card-form" data-action="create-card-form" data-list-id="${listId}">
+      <input type="text" name="card-title" placeholder="Add a card" data-list-id="${listId}" />
+      <button type="submit">Add card</button>
+    </form>`;
+}
+
+// FR2, FR6, FR3, FR10: render a board's lists with their cards.
 export function renderBoardView(state, boardId) {
   const boardView = document.getElementById('board-view');
   const titleEl = document.getElementById('board-view-title');
@@ -58,7 +83,7 @@ export function renderBoardView(state, boardId) {
           <span class="list-title" data-action="rename-list" data-list-id="${list.id}">${escapeHtml(list.title)}</span>
           <button type="button" data-action="delete-list" data-list-id="${list.id}">Delete</button>
         </div>
-        <ul class="cards-list" data-list-id="${list.id}"></ul>
+        ${renderCards(state, list.id)}
       </div>`
     )
     .join('');

@@ -19,4 +19,4 @@ Implement card CRUD in the store and render cards within lists, per FR3.
 - No console errors.
 
 ## Status
-TODO
+DONE

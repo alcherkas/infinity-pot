@@ -113,6 +113,42 @@ export function deleteList(listId) {
   persist();
 }
 
+function findCard(cardId) {
+  const card = state.cards.find((c) => c.id === cardId);
+  if (!card) throw new Error('card not found');
+  return card;
+}
+
+export function createCard(listId, title) {
+  findList(listId);
+  const trimmed = requireTitle(title);
+  const cardsInList = state.cards.filter((c) => c.listId === listId);
+  const card = {
+    id: crypto.randomUUID(),
+    listId,
+    title: trimmed,
+    order: cardsInList.length,
+    createdAt: new Date().toISOString(),
+  };
+  state.cards.push(card);
+  persist();
+  return card;
+}
+
+export function renameCard(cardId, title) {
+  const card = findCard(cardId);
+  const trimmed = requireTitle(title);
+  card.title = trimmed;
+  persist();
+  return card;
+}
+
+export function deleteCard(cardId) {
+  findCard(cardId);
+  state.cards = state.cards.filter((c) => c.id !== cardId);
+  persist();
+}
+
 export function reorderLists(boardId, listId, toIndex) {
   findList(listId);
   const ordered = state.lists.filter((l) => l.boardId === boardId).sort((a, b) => a.order - b.order);

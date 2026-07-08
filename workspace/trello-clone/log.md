@@ -79,3 +79,19 @@ No UI exercised this turn (no `05-qa/walkthrough/turn-5/` directory produced —
 
 **Agent improvements**
 No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).
+
+## Turn 6
+
+**Done**
+- `gap-analyst` reassessed and recommended `developer:task-006` as the next action (cards — the core entity making this a Trello clone), while flagging that the Playwright smoke test built in turn 4 still has never been executed (two turns running) and that `architecture.md`'s stale "no dependencies" line has now gone unfixed for four consecutive turns.
+- `developer:task-006` built card operations in `04-build/src/public/js/store.js` (`createCard`, `renameCard`, `deleteCard` with FK validation via `findList`/`findCard`) and extended `deleteList`'s cascade to remove associated cards; extended `render.js` (`renderCards`) and `events.js` to render/create/rename/delete cards within lists in the board view.
+- `code-reviewer:task-006` gated: `04-build/reviews/task-006-review.md` — VERDICT: APPROVED (first pass, no bounce). Confirmed cascade completeness (list delete now cascades to cards), FR10 empty-state rendering, consistent error-handling pattern, and persistence via `storage.js` write-through. One cosmetic-only note (redundant destructuring in `events.js:151`), not blocking.
+- `03-plan/backlog.md` updated: task-006 marked DONE.
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 6, last_action `code-reviewer:task-006`, next `qa-engineer`.
+
+**Walkthrough**
+No UI exercised this turn (no `05-qa/walkthrough/turn-006/` directory produced — no `ui-tester` run this turn; the Playwright smoke test built in turn 4 still has not been executed even once, a gap now flagged for five consecutive turns and slated as the top-priority action for turn 7 via `qa-engineer`).
+
+**Agent improvements**
+No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).

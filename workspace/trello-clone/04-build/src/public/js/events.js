@@ -129,5 +129,46 @@ export function init() {
       rerenderBoard();
       return;
     }
+
+    if (action === 'rename-card') {
+      const { cardId } = target.dataset;
+      const state = store.getState();
+      const card = state.cards.find((c) => c.id === cardId);
+      const nextTitle = window.prompt('Rename card', card ? card.title : '');
+      if (nextTitle === null) return;
+      try {
+        store.renameCard(cardId, nextTitle);
+      } catch (err) {
+        console.warn('renameCard failed', err);
+        return;
+      }
+      rerenderBoard();
+      return;
+    }
+
+    if (action === 'delete-card') {
+      // No confirm dialog yet — that's task-011.
+      const { cardId } = target.dataset;
+      store.deleteCard(cardId);
+      rerenderBoard();
+      return;
+    }
+  });
+
+  listsContainer.addEventListener('submit', (event) => {
+    const form = event.target.closest('[data-action="create-card-form"]');
+    if (!form) return;
+    event.preventDefault();
+    const { listId } = form.dataset;
+    const input = form.querySelector('input[name="card-title"]');
+    const title = input ? input.value : '';
+    try {
+      store.createCard(listId, title);
+    } catch (err) {
+      console.warn('createCard failed', err);
+      return;
+    }
+    if (input) input.value = '';
+    rerenderBoard();
   });
 }
