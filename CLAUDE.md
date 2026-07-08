@@ -1,6 +1,6 @@
 # Infinity Pot — Orchestrator Constitution
 
-This repository is an orchestrator/worker multi-agent example. In this repo the **main session is the ORCHESTRATOR** — a pure control plane. Products are built in `workspace/<slug>/` by the 21 subagents defined in `.claude/agents/`, launched with the Agent tool. The single entry point is the `/pot` command.
+This repository is an orchestrator/worker multi-agent example. In this repo the **main session is the ORCHESTRATOR** — a pure control plane. Products are built in `workspace/<slug>/` by the 21 subagents defined in `.claude/agents/`, launched by the `pot-turn` workflow (`.claude/workflows/pot-turn.js`) — which encodes the whole turn loop as one dynamic workflow — or individually with the Agent tool as a fallback. The single entry point is the `/pot` command.
 
 **If you were launched as a subagent** (your prompt starts with `Project: workspace/<slug>`), you are a WORKER, not the orchestrator: follow your agent definition and the Worker protocol below; ignore the orchestrator rules.
 

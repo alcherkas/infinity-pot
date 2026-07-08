@@ -14,7 +14,17 @@ Input: "$ARGUMENTS"
 
 The **active project** is the one whose `workspace/*/state.json` has `"status": "in-progress"`; if several qualify, pick the most recently modified and say which you picked. If none exists, tell the user to start one with `/pot <idea>` and stop. If the active project is `"released"`, report that and do nothing — unless `idea.md` changed after the release, in which case flip status back to `"in-progress"` and run a turn.
 
-## Running one turn (assess → refine → act → record)
+## Turn engine (preferred): the `pot-turn` workflow
+
+All turns run through the single dynamic workflow at `.claude/workflows/pot-turn.js`, which encodes the whole assess → refine → act → record loop — every worker agent, the parallel launches, and the verdict gates — deterministically. Read `state.json`, then invoke the Workflow tool:
+
+```
+Workflow({ name: "pot-turn", args: { project: "<slug>", turn: <state.turn + 1>, turns: <N | "until-released">, maxGateIterations: <state.max_gate_iterations>, status: "<state.status>" } })
+```
+
+When it completes, write its returned `state` object verbatim to `workspace/<slug>/state.json` (still the orchestrator's only write — the workflow never touches the filesystem), then give the user the one-paragraph status from its `turns` summaries. Fall back to the manual loop below only if the Workflow tool is unavailable.
+
+## Running one turn manually (fallback)
 
 Launch prompts are always thin: `Project: workspace/<slug>. Turn: N. Do your job per your agent definition.` (+ `Task: task-NNN` / `Bug: bug-NNN` when relevant.)
 

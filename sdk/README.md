@@ -44,11 +44,18 @@ All 20 agents from the markdown roster are present: the 19 producers/gates above
 ```bash
 cd sdk
 npm install
-export ANTHROPIC_API_KEY=sk-ant-...
 
-npm run pot -- "a tool that reminds me to water my houseplants"   # seed + turn 1
-npm run pot          # one more turn on the active project
-npm run pot -- 3     # three turns back-to-back
+# Store your key once in the macOS Keychain (this never touches shell history;
+# `-w` with no value prompts you to paste it). The app loads it automatically.
+security add-generic-password -a "$USER" -s anthropic-api-key -w
+#   update later:  security add-generic-password -U -a "$USER" -s anthropic-api-key -w
+#   remove:        security delete-generic-password -a "$USER" -s anthropic-api-key
+# CI / one-off override: set ANTHROPIC_API_KEY and it wins over the Keychain.
+
+npm run pot -- "a tool that reminds me to water my houseplants"     # seed + 1 turn
+npm run pot -- "a tool that reminds me to water my houseplants" 5   # seed + 5 turns
+npm run pot          # one more turn on the active project (runs until released)
+npm run pot -- 3     # three turns back-to-back on the active project
 npm run typecheck    # tsc --noEmit
 ```
 

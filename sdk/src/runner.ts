@@ -2,8 +2,9 @@ import Anthropic from "@anthropic-ai/sdk";
 import { zodOutputFormat } from "@anthropic-ai/sdk/helpers/zod";
 import type { z } from "zod/v4";
 import type { AgentDef } from "./agents.js";
+import { getApiKey } from "./secret.js";
 
-const client = new Anthropic();
+const client = new Anthropic({ apiKey: getApiKey() });
 
 /**
  * Run one agent: hand it the input slice as JSON, and constrain its reply to the
