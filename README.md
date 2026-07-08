@@ -19,14 +19,9 @@ An example of the **orchestrator/worker pattern** in Claude Code, built entirely
 That seeds `workspace/houseplant-tracker/` and runs turn 1 (requirements refined, open questions answered autonomously, every assumption logged). Then keep stirring:
 
 ```
-/pot        # one more turn
+/pot 1      # one more turn
 /pot 5      # five turns back-to-back
-```
-
-Autonomous mode is the same command in a loop:
-
-```
-/loop /pot
+/pot        # unlimited turns — run until the project is released
 ```
 
 Each turn ends with one git commit (`turn NNN: …`), so `git log --oneline` is the project's history and `workspace/<slug>/log.md` is its illustrated journal — including Playwright walkthrough screenshots of the UI and the agent-definition improvements made that turn.

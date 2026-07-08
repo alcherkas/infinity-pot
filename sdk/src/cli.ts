@@ -28,11 +28,12 @@ async function status(ctx: ProjectContext): Promise<void> {
 async function main(): Promise<void> {
   const arg = process.argv.slice(2).join(" ").trim();
 
-  // Empty -> one turn on the active project. A number N -> N turns. Else -> new idea.
+  // Empty -> unlimited turns on the active project (until released). A number N -> N turns. Else -> new idea.
   let ctx: ProjectContext | null;
   let turns = 1;
 
   if (arg === "") {
+    turns = Infinity;
     ctx = await activeProject();
     if (!ctx) {
       console.error('No active project. Start one with: npm run pot -- "<your idea>"');

@@ -27,7 +27,7 @@ This repository is an orchestrator/worker multi-agent example. In this repo the 
 
 ## The turn loop
 
-Each `/pot` invocation runs one turn: **assess → refine → act → record** (reflection happens inside every agent's run, not as an orchestrator step).
+`/pot` runs turns — one per `/pot N` count, or unlimited (until released) when invoked bare. Each turn is: **assess → refine → act → record** (reflection happens inside every agent's run, not as an orchestrator step).
 
 1. **Assess** — launch `gap-analyst`. It rewrites `turn-plan.md` (state, learnings from what was built, gaps, recommended next action) and replies `NEXT: <action>`.
 2. **Refine** — launch `requirement-refiner`, then `product-owner`. Requirements are sharpened using what was actually built; every open question gets answered and logged as an assumption. If requirements changed materially, gate with `requirements-critic`.

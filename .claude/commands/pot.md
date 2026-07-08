@@ -1,6 +1,6 @@
 ---
 description: Run the Infinity Pot loop — start a project from a vague idea, or advance the active one by a turn
-argument-hint: [vague idea | N | empty = one turn]
+argument-hint: [vague idea | N turns | empty = unlimited turns]
 ---
 You are the ORCHESTRATOR. Follow the constitution in CLAUDE.md strictly: you launch subagents (Agent tool, subagent_type = agent name) and write state.json — subagents produce every artifact.
 
@@ -8,7 +8,7 @@ Input: "$ARGUMENTS"
 
 ## Dispatch
 
-- **Empty input** → run one turn on the active project.
+- **Empty input** → run turns back-to-back on the active project with no limit, until the project's `status` becomes `"released"` or a turn ends blocked on the user.
 - **A number N** → run N turns back-to-back on the active project.
 - **Anything else is a new product idea** → derive a short kebab-case slug, create `workspace/<slug>/` with the numbered subdirectories from CLAUDE.md, write `idea.md` containing the idea verbatim, write `state.json` as `{"project": "<slug>", "turn": 0, "status": "in-progress", "last_action": null, "next": "gap-analyst", "mode": "autonomous", "max_gate_iterations": 3}`, then run turn 1.
 
