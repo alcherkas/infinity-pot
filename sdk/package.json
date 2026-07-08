@@ -1,0 +1,21 @@
+{
+  "name": "infinity-pot-sdk",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Infinity Pot's 20-agent orchestrator/worker loop, rebuilt on the Anthropic SDK with structured output as the message bus.",
+  "scripts": {
+    "pot": "tsx src/cli.ts",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.110.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

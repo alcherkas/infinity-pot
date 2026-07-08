@@ -21,7 +21,7 @@ Launch prompts are always thin: `Project: workspace/<slug>. Turn: N. Do your job
 1. **Assess** — launch `gap-analyst`; take its `NEXT:` line as this turn's recommended action.
 2. **Refine** — launch `requirement-refiner`, then `product-owner`. If requirements changed materially, gate with `requirements-critic` (relaunch refiner on CHANGES_REQUESTED, max `max_gate_iterations` cycles, then proceed with the override noted).
 3. **Act** — launch the recommended agent(s). Apply verdict gates the same way (`design-critic` over design work, `code-reviewer` per task, QA verdicts). Launch independent agents in parallel in one message; developers sequentially.
-4. **Record** — update `state.json` (turn+1, last_action, next = gap-analyst's likely follow-up), then launch `scribe` (it writes the log entry and makes the turn's single commit). Reflection is not an orchestrator step — every worker self-reflects on its own definition at the end of its run, per the Worker protocol in CLAUDE.md.
+4. **Record** — update `state.json` (turn+1, last_action, next = gap-analyst's likely follow-up). On every 5th turn (`turn % 5 == 0`), first launch `harness-miner` with the thin prompt `Do your job per your agent definition.` — it works cross-project, so no project path. Then launch `scribe` (it writes the log entry, appends the turn's per-agent outcome lines to `evolution/metrics.md`, and makes the turn's single commit). Reflection is not an orchestrator step — every worker self-reflects on its own definition at the end of its run, per the Worker protocol in CLAUDE.md.
 
 To read outcomes, only look at agents' one-line final messages, `VERDICT:` first lines, and `turn-plan.md` — do not re-read whole artifacts into context.
 

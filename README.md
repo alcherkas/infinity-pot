@@ -1,6 +1,6 @@
 # ♾️ Infinity Pot
 
-An example of the **orchestrator/worker pattern** in Claude Code, built entirely from markdown — no harness code. You type one vague product idea; a fleet of 20 tiny subagents iterates it into a working, tested, documented product, one turn at a time.
+An example of the **orchestrator/worker pattern** in Claude Code, built entirely from markdown — no harness code. You type one vague product idea; a fleet of 21 tiny subagents iterates it into a working, tested, documented product, one turn at a time.
 
 ## The pattern
 
@@ -8,7 +8,7 @@ An example of the **orchestrator/worker pattern** in Claude Code, built entirely
 - **Workers = subagents.** Each agent in [`.claude/agents/`](.claude/agents/) is ≤10 sentences: role, input files, output files, done-signal. Launched via the Agent tool with a thin prompt (`Project: workspace/<slug>. Turn: N.`).
 - **Filesystem = message bus.** Agents never talk to each other; they read and write files under `workspace/<slug>/`.
 - **Turns = convergence loop.** Every turn: **assess** (what's built vs. what's required) → **refine** (requirements improve from what building revealed) → **act** (the next most valuable work) → **record** (log + one git commit per turn). Requirements are never frozen — reality feeds back into them each turn.
-- **Agents improve themselves.** At the end of every run, each worker self-reflects: if its own definition misled it, it rewrites the offending sentence(s) in its own file (kept ≤10 sentences) and logs the change to `reflections.md`. The turn log shows every definition change.
+- **Agents improve themselves — with evidence and validation.** At the end of every run, each worker self-reflects: it may rewrite a sentence of its own definition (kept ≤10 sentences) only by citing a concrete event from the run (a gate bounce, a failed command, a reviewer finding). Every edit lands in `evolution/ledger.md` on **probation**; on its next run the agent judges the edit against real outcomes and keeps or reverts it. `scribe` logs a per-agent outcome line each turn to `evolution/metrics.md`, and every 5th turn `harness-miner` mines those outcomes across all projects into `evolution/weaknesses.md` — per-agent measured weaknesses and merged candidate lessons that feed the next reflections. (Mechanisms borrowed from Self-Harness, AlphaEvolve, GEPA, and Chain-of-Evidence.)
 
 ## Quickstart
 
@@ -31,7 +31,7 @@ Autonomous mode is the same command in a loop:
 
 Each turn ends with one git commit (`turn NNN: …`), so `git log --oneline` is the project's history and `workspace/<slug>/log.md` is its illustrated journal — including Playwright walkthrough screenshots of the UI and the agent-definition improvements made that turn.
 
-## The roster (20 agents)
+## The roster (21 agents)
 
 | Loop role | Agents |
 |-----------|--------|
@@ -44,6 +44,7 @@ Each turn ends with one git commit (`turn NNN: …`), so `git log --oneline` is 
 | Fix | `bug-fixer` |
 | Ship | `tech-writer` |
 | Record | `scribe` |
+| Learn | `harness-miner` (every 5th turn) |
 
 Gate agents write reports whose first line is `VERDICT: APPROVED` or `VERDICT: CHANGES_REQUESTED`; the orchestrator relaunches the producer until approved (max 3 cycles per turn, then it proceeds and logs the override — the loop never stalls).
 
@@ -64,6 +65,15 @@ workspace/<slug>/
 ├── 04-build/       # src/ (the product), code reviews
 ├── 05-qa/          # test reports, walkthrough screenshots, bugs
 └── 06-ship/        # user docs, security review, release notes
+```
+
+Self-improvement state is repo-level (agent definitions span projects):
+
+```
+evolution/
+├── ledger.md      # append-only: every definition edit — before/after, evidence, PROBATION → KEPT/REVERTED
+├── metrics.md     # append-only: one outcome line per agent-run (scribe, every turn)
+└── weaknesses.md  # rewritten by harness-miner every 5th turn: measured weaknesses + candidate lessons
 ```
 
 ## Adding an agent
