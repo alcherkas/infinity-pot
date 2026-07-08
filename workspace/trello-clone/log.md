@@ -95,3 +95,17 @@ No UI exercised this turn (no `05-qa/walkthrough/turn-006/` directory produced �
 
 **Agent improvements**
 No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).
+
+## Turn 7
+
+**Done**
+- `gap-analyst` reassessed and recommended `qa-engineer` for the second turn in a row as the highest-value action: seven completed tasks across six turns had "approved first pass" static review but zero dynamic verification, and the Playwright smoke test built at turn 4 had sat unexecuted through three turns of subsequent feature work.
+- `qa-engineer` ran the existing Playwright suite for the first time (`05-qa/test-report.md` — VERDICT: APPROVED): `npm install`, `npx playwright install chromium`, `npm test` — 1 passed, 0 failed, 0 skipped (`tests/smoke.spec.js`: boards overview empty state, board creation, and persistence-across-reload all verified against the real running app). No bugs filed. Coverage gap flagged for a future `test-writer` turn: only the boards-overview smoke path is automated — no coverage yet for lists, cards, cascade deletes, or any future drag-and-drop.
+- No gate overrides this turn — `qa-engineer`'s own report was self-approved (no separate reviewer gate on `qa-engineer` in this loop).
+- `state.json` updated: turn 7, last_action `qa-engineer`, next `developer:task-007` (card detail modal, FR8).
+
+**Walkthrough**
+No UI exercised via screenshots this turn — `qa-engineer` verified via the automated Playwright suite (headless run, no `05-qa/walkthrough/turn-007/` directory produced) rather than an exploratory `ui-tester` pass with screenshots. First-ever execution of the smoke suite, closing a gap flagged for five consecutive turns.
+
+**Agent improvements**
+No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).

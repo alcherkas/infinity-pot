@@ -1,43 +1,34 @@
-# Turn Plan — trello-clone (Turn 6)
+# Turn Plan — trello-clone (assessed turn 7)
 
 ## State
 
 - `idea.md`: "analog of trello boards" — one line, unchanged since turn 1.
-- `01-understand/requirements.md`: FR1-FR14 + NFRs. `review.md` — VERDICT: APPROVED (turn 1, no bounce). Stable across all turns.
-- `02-design/architecture.md`, `api.md`, `data-model.md`: plain HTML/CSS/JS, no framework, Node `http` static server, native HTML5 DnD, Playwright for QA. `review.md` — VERDICT: APPROVED (turn 1, no bounce). The stale "no dependencies" line (contradicted by the shipped Playwright devDependency) has now been flagged for **four** consecutive turns and is still uncorrected.
-- `03-plan/backlog.md`: 16 tasks, well-ordered with Reordering notes and a Risks section. 6 of 16 DONE as of this turn (task-005 lists landed).
-- `04-build/`: 6 of 16 tasks DONE, all reviewed APPROVED first-pass, zero bugs found across any of them:
-  - task-001 skeleton server + empty-state boot
-  - task-002 `storage.js` versioned localStorage load/save
-  - task-003 `store.js` board CRUD + reorder
-  - task-004 boards overview UI
-  - task-015 Playwright harness (config + smoke.spec.js)
-  - task-005 `store.js` list CRUD/cascade + board-view UI
-  - 10 tasks remain, in backlog order: cards (006), card detail modal (007), delete-confirm (011), card DnD (008), move-fallback (010), list DnD (009), board DnD (016), labels (012), due dates (013), search (014).
-- `05-qa/`: contains the Playwright harness as *code only*. **It has never been run**, for the second turn running (built turn 4, still not executed turn 6). No `test-report.md`, no `ui-test-report.md`, no `05-qa/walkthrough/` directory, no bugs filed. All 6 build tasks have been approved via static code review alone — zero dynamic execution evidence exists anywhere in this project after 6 turns.
-- `06-ship/`: does not exist yet — correctly premature; the app has no cards yet, so it isn't a usable Trello clone.
-- No bugs filed. No gate overrides any turn (every review APPROVED first pass, 6 for 6). `reflections.md` still empty across all 6 turns — no `CHANGES_REQUESTED` cycles have occurred, no `[PROBATION]` entries pending in `evolution/ledger.md`.
-- `state.json`: turn 5, last_action `code-reviewer:task-005`, next `developer:task-006` — consistent with backlog and log.
+- **Requirements** (`01-understand/requirements.md`): FR1-FR14 + NFR1-NFR5, `review.md` — VERDICT: APPROVED (turn 1, no bounce). Stable across all turns.
+- **Design** (`02-design/architecture.md`, `api.md`, `data-model.md`): plain HTML/CSS/JS, no framework, Node `http` static server, native HTML5 DnD, Playwright for QA. `review.md` — VERDICT: APPROVED (turn 1, no bounce). Deliberately amends the requirements doc's React/Vite sketch — a documented, reasoned deviation, not drift. The stale "no dependencies" line (contradicted by the shipped `@playwright/test` devDependency) has now been flagged for **five** consecutive turns and is still uncorrected.
+- **Plan** (`03-plan/backlog.md`): 16 tasks. 7 of 16 DONE as of this turn: task-001 (skeleton), 002 (storage), 003 (board CRUD), 004 (boards UI), 015 (Playwright harness), 005 (list CRUD/cascade + UI), 006 (card CRUD/cascade + UI, landed this turn). 9 remain: task-007 (card modal), 011 (confirm dialogs), 008/009/016 (drag-and-drop), 010 (move fallback), 012/013/014 (could-haves).
+- **Build** (`04-build/src/`): boards+lists+cards CRUD with cascading delete all the way down (board→list→card), all 7 tasks reviewed **APPROVED first-pass, zero bounces, zero bugs found** across the entire project so far.
+- **QA** (`05-qa/`): Playwright harness (`playwright.config.js`, `tests/smoke.spec.js`) built at turn 4 by task-015, reviewed and approved — **but never once executed**. Zero pass/fail evidence exists for any of the 7 completed tasks, across 3 consecutive turns of this exact gap being flagged and deferred. No `test-report.md`, no `ui-test-report.md`, no `05-qa/walkthrough/` directory, no `ui-tester` run ever, no bugs filed.
+- **Ship** (`06-ship/`): empty. Correctly premature — no `tech-writer`/`security-reviewer`/`release-manager` output expected yet given the missing core interactions (DnD, confirm dialogs) below.
+- **Reflections/evolution**: `reflections.md` empty across all 6 turns — no `CHANGES_REQUESTED` cycle has ever occurred, so no agent has had citable evidence to self-edit. `evolution/ledger.md` has no pending `[PROBATION]` entries for this project's agents to resolve.
+- `state.json`: turn 6, last_action `code-reviewer:task-006`, next `qa-engineer` — consistent with backlog and log; this turn's assessment confirms `qa-engineer` is correctly the next action.
 
 ## Learnings
 
-- **Six consecutive first-pass APPROVED reviews with zero dynamic execution is no longer a mild yellow flag — it's a compounding risk.** The Playwright harness built in turn 4 to close exactly this gap has now sat unused for two full turns while store/UI logic for boards and lists both landed on top of it unverified. Static code review cannot catch a wrong DOM selector, a broken cascade, or a storage race — only running the app can. This project should not add a third layer of untested UI (cards, task-006) before running the one test that already exists against boards+lists.
-- **The stale "no dependencies" line in `architecture.md` has been flagged four turns running and never fixed.** This confirms last turn's hypothesis: non-blocking review notes without an assigned task number reliably rot. Concrete recommendation for this turn or next: fold the one-line fix into whichever agent next touches `architecture.md`, or explicitly assign it as a trivial standalone task rather than re-flagging a fifth time.
-- **The backlog's own Risks section correctly anticipated the cascade-delete risk** — task-005's review confirmed board-delete now cascades through lists to cards — but that cascade path has still never been exercised against *real* card data, because cards don't exist yet. This will only be truly verifiable once task-006 lands and should be an explicit code-reviewer check item for task-006, not an afterthought.
-- **The project is 6 turns and 6 tasks in without a single card existing.** For a "Trello clone," cards are the load-bearing entity — boards and lists are just containers. This is worth naming plainly: velocity looks good (6/16 tasks, zero rework) but user-facing value is still effectively zero until task-006 lands.
+- **"Zero bugs found across 7 tasks, 6 turns" is not evidence of quality — it's evidence that nothing has been dynamically tested.** Every one of those verdicts comes from static code review alone. The Playwright harness that exists specifically to close this gap (built turn 4) has now been deferred through three consecutive turns of feature work (lists, cards) stacked on top of it. This is the clearest discrepancy between reported project health ("all green") and actual verified health (unknown) — worth calling out plainly rather than re-flagging politely again.
+- **The backlog's own stated rationale for moving task-015 early — "so every subsequent task's manual acceptance criteria also get an automated regression check" (`backlog.md` line 30) — has been ignored in execution for three turns running.** The plan correctly anticipated this need; the loop simply hasn't acted on it. This is a process learning: a built-but-unexecuted test asset should trigger `qa-engineer` immediately, not after N more `developer` tasks land on top of it.
+- **The stale "no dependencies" architecture line has been flagged 5 turns straight with no fix**, despite being a one-line, zero-risk edit. This confirms the turn-5 hypothesis that non-blocking review notes without an assigned task number reliably rot. Low urgency on its own, but the pattern (flag, defer, repeat) is itself worth naming: cheap fixes need an owner/task, not repeated mentions in `turn-plan.md`.
+- **Core Trello interactions are still entirely missing**: no card detail/description editing (FR8), no drag-and-drop at all (FR4/FR5/FR6/FR9 — arguably the single most identifiable "Trello" interaction), no confirm-before-delete (FR11 — every delete today is silent and irreversible, already flagged as a real data-loss risk in `backlog.md`'s Risks section). The project has built CRUD depth (3 levels, full cascade) before building the interactions that make it feel like Trello.
 
 ## Gaps (prioritized)
 
-1. **Cards (task-006) not built.** The single largest missing piece of core product value — without cards this is not yet a usable Trello clone at all.
-2. **The Playwright smoke test has still never been executed**, two turns after being built. Cheapest possible high-value action once cards exist (or even right now against the current boards+lists flow) — should not be deferred a third turn.
-3. **9 remaining build tasks after cards**: card detail modal (007), delete-confirm (011), card DnD (008), move-fallback (010), list DnD (009), board DnD (016), labels (012), due dates (013), search (014).
-4. **Unresolved risk items in `backlog.md`'s Risks section** still awaiting product-owner input: DnD browser/device support scope (008/009/016), silent localStorage-save-failure UX, modal save/close semantics (007) — the last one is about to become live as task-007 is now only one task away.
-5. **No `ui-tester` run has ever occurred** — zero manual/exploratory verification alongside the never-run automated suite.
-6. **Minor doc debt**: `architecture.md`'s stale "no dependencies" line — four turns flagged, still open, still a five-minute fix.
-7. `06-ship/` (docs, security review, release) — correctly not due yet; premature until cards + core interactions exist.
+1. **Never-executed test suite (highest priority, now carried 3 consecutive turns since the harness landed).** `05-qa/tests/smoke.spec.js` exists, is reviewed, has never been run. This blocks real confidence in all 7 "DONE" tasks and is exactly the job `qa-engineer` exists to do — not another `developer` task.
+2. **Core feature set still incomplete relative to a "Trello clone."** No card detail modal (task-007), no drag-and-drop (task-008/009/016), no confirm-before-delete (task-011, real irreversible-data-loss risk today).
+3. **Stale architecture doc line** re: "no dependencies" — cheap one-line fix, low priority, flagged 5 turns running.
+4. **Unresolved risk items in `backlog.md`'s Risks section awaiting product-owner input**: DnD browser/device support scope, silent localStorage-save-failure UX, task-007's save-on-close vs. discard-on-close semantics — the last becomes live the moment task-007 starts.
+5. **No `06-ship/` artifacts** — correctly not due yet.
 
 ## Next
 
-**`developer:task-006`** — build `store.js` card operations (`createCard`, `renameCard`, `deleteCard`) and extend the board-view UI to render cards within lists with create/rename/delete.
+**qa-engineer.**
 
-Rationale: this is the next TODO item in `backlog.md`'s dependency-ordered sequence, it is the single highest-value action available (cards are the core entity that makes the product a Trello clone rather than a board/list organizer), and it has no blocking dependency — lists (task-005) are done. Follow with `code-reviewer:task-006` per the standard gate, with an explicit instruction to verify the board→list→card cascade-delete path end-to-end now that all three levels exist. Immediately after, the top-priority action for the *following* turn should be to actually run the Playwright smoke test (via `qa-engineer`) and produce `05-qa/test-report.md` — this project cannot keep adding untested UI surface on top of a harness that has been built but never executed for two turns running.
+Rationale: this is the single highest-value action available this turn, and the second turn in a row this report recommends it. Seven tasks and six turns of "approved on first pass" static review have never once been checked against a running app. The Playwright smoke test built specifically for this purpose (turn 4) has sat unexecuted through three turns of new feature work (lists, then cards) stacked on top of it. Run the existing suite, do a real exploratory walkthrough of boards→lists→cards CRUD and cascade-delete, and produce `05-qa/test-report.md` (plus `05-qa/bugs/bug-NNN.md` for anything broken). This gives the next `developer:task-007` (card modal) and `code-reviewer` runs empirical ground truth instead of code-reading alone, and de-risks continuing to add feature surface (DnD, modals) on top of a foundation that has never actually been run.
