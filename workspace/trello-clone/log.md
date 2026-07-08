@@ -1,0 +1,21 @@
+# Log — trello-clone
+
+## Turn 1
+
+**Done**
+- `gap-analyst` assessed a blank project (idea.md only: "analog of trello boards") and recommended `requirement-refiner` → `product-owner` to establish first requirements, per `turn-plan.md`.
+- `requirement-refiner` wrote `01-understand/requirements.md` (FR1-FR14, NFR1-NFR5), `open-questions.md`, `assumptions.md`; `product-owner` answered all open questions and logged assumptions (single-user SPA, localStorage persistence, no backend/auth/collaboration).
+- `requirements-critic` gated: `01-understand/review.md` — VERDICT: APPROVED (first pass, no bounce).
+- `architect` produced `02-design/architecture.md`, `api.md`, `data-model.md`, mapping every FR/NFR to a component.
+- `design-critic` gated: `02-design/review.md` — VERDICT: APPROVED (first pass, no bounce).
+- `planner`/`estimator` produced `03-plan/backlog.md` (16 tasks, ordered for earliest runnable app) and `03-plan/tasks/task-001.md` through `task-016.md`.
+- `developer:task-001` built the skeleton dev server (`04-build/package.json`, `04-build/src/server.js`, `public/index.html`, `app.css`, `app.js` boot with empty-state render). `code-reviewer:task-001` — VERDICT: APPROVED (first pass, `04-build/reviews/task-001-review.md`).
+- `developer:task-002` built `04-build/src/public/js/storage.js` (versioned localStorage load/save with corrupt-data and empty-state handling). `code-reviewer:task-002` — VERDICT: APPROVED (first pass, `04-build/reviews/task-002-review.md`).
+- No gate overrides this turn — every review gate passed on the first cycle.
+- `state.json` updated: turn 1, last_action `code-reviewer:task-002`, next `developer:task-003`.
+
+**Walkthrough**
+No UI exercised this turn.
+
+**Agent improvements**
+No changes.

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trello Clone</title>
+  <link rel="stylesheet" href="app.css" />
+</head>
+<body>
+  <header id="app-header">
+    <h1>Trello Clone</h1>
+  </header>
+
+  <main id="app-main">
+    <!-- Boards overview: list of boards, empty-state message, create-board control -->
+    <section id="boards-view"></section>
+
+    <!-- Single board view: lists + cards for the currently open board -->
+    <section id="board-view" hidden></section>
+  </main>
+
+  <!-- Card detail modal, populated when a card is opened -->
+  <div id="card-modal" hidden></div>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
