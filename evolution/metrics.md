@@ -39,3 +39,6 @@ trello-clone turn 007 — qa-engineer — approved_first_pass
 trello-clone turn 008 — gap-analyst — n/a
 trello-clone turn 008 — developer:task-007 — approved_first_pass
 trello-clone turn 008 — code-reviewer:task-007 — n/a
+trello-clone turn 9 — gap-analyst — n/a
+trello-clone turn 9 — developer:task-011 — approved_first_pass
+trello-clone turn 9 — code-reviewer:task-011 — approved_first_pass

@@ -125,3 +125,19 @@ No UI exercised this turn — no `05-qa/walkthrough/turn-008/` directory was pro
 
 **Agent improvements**
 No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).
+
+## Turn 9
+
+**Done**
+- `gap-analyst` reassessed and confirmed `developer:task-011` as the next action (FR11 confirm-before-delete dialogs), flagging it as the single highest-value, lowest-risk remaining gap since all three delete paths (board/list/card) it depends on were already built and reviewed. Also reiterated three carried-over gaps: `architecture.md`'s stale "no dependencies" line (now 7 consecutive turns unfixed), thin QA coverage (only boards-overview automated, no coverage of lists/cards/cascades/the card modal), and `ui-tester` never having run once in 9 turns.
+- `developer:task-011` built confirm-before-delete guards in `04-build/src/public/js/events.js` around all three destructive actions: delete-board, delete-list, delete-card. Each is wrapped in `if (!window.confirm(...)) return;` with a message naming the affected item and warning about cascading deletion where relevant; cancelling leaves data untouched, confirming proceeds with the existing (unmodified) cascading `store.delete*` calls.
+- `code-reviewer:task-011` gated: `04-build/reviews/task-011-review.md` — VERDICT: APPROVED (first pass, no bounce). Confirmed all three call sites correctly guard the pre-existing cascading delete behavior, cancel paths return early with no store mutation, and no leftover debug code was introduced.
+- `03-plan/backlog.md` and `03-plan/tasks/task-011.md` updated: task-011 marked DONE.
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 9, last_action `code-reviewer:task-011`, next `developer:task-008` (drag-and-drop, FR4/FR5).
+
+**Walkthrough**
+No UI exercised this turn — no `05-qa/walkthrough/turn-009/` directory was produced; verification was via code review only (`ui-tester` has still never run once in 9 turns despite a real interactive UI, including confirm dialogs added this turn, existing since turn 3).
+
+**Agent improvements**
+No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).

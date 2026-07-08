@@ -16,4 +16,4 @@ Guard board/list/card deletion with a confirmation step, per FR11.
 - No console errors.
 
 ## Status
-TODO
+DONE

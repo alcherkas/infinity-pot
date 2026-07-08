@@ -102,7 +102,10 @@ export function init() {
     }
 
     if (action === 'delete-board') {
-      // No confirm dialog yet — that's task-011.
+      const state = store.getState();
+      const board = state.boards.find((b) => b.id === boardId);
+      const label = board ? board.title : 'this board';
+      if (!window.confirm(`Delete "${label}" and all its lists and cards?`)) return;
       store.deleteBoard(boardId);
       rerenderBoards();
       return;
@@ -152,7 +155,10 @@ export function init() {
     }
 
     if (action === 'delete-list') {
-      // No confirm dialog yet — that's task-011.
+      const state = store.getState();
+      const list = state.lists.find((l) => l.id === listId);
+      const label = list ? list.title : 'this list';
+      if (!window.confirm(`Delete "${label}" and all its cards?`)) return;
       store.deleteList(listId);
       rerenderBoard();
       return;
@@ -165,8 +171,11 @@ export function init() {
     }
 
     if (action === 'delete-card') {
-      // No confirm dialog yet — that's task-011.
       const { cardId } = target.dataset;
+      const state = store.getState();
+      const card = state.cards.find((c) => c.id === cardId);
+      const label = card ? card.title : 'this card';
+      if (!window.confirm(`Delete "${label}"?`)) return;
       store.deleteCard(cardId);
       rerenderBoard();
       return;
