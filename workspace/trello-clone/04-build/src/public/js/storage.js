@@ -39,6 +39,9 @@ export function load() {
   };
 }
 
+// NFR7: returns true on success, false on failure (e.g. quota exceeded,
+// private-browsing storage disabled) so callers can surface a UI warning.
+// Never throws — a failure is caught and logged here.
 export function save(state) {
   try {
     const payload = JSON.stringify({
@@ -48,7 +51,9 @@ export function save(state) {
       cards: state.cards || [],
     });
     localStorage.setItem(KEY, payload);
+    return true;
   } catch (err) {
     console.warn('storage.save: failed to persist state', err);
+    return false;
   }
 }

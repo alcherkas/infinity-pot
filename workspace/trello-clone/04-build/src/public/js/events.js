@@ -237,6 +237,14 @@ export function init() {
   const boardsList = document.getElementById('boards-list');
   const backButton = document.getElementById('back-to-boards');
 
+  // NFR7: dismiss the persistence-save-failure warning banner.
+  const saveWarningDismiss = document.getElementById('save-warning-dismiss');
+  if (saveWarningDismiss) {
+    saveWarningDismiss.addEventListener('click', () => {
+      render.hideSaveWarning();
+    });
+  }
+
   createForm.addEventListener('submit', (event) => {
     event.preventDefault();
     const title = createInput.value;

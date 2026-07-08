@@ -9,6 +9,19 @@ function escapeHtml(str) {
     .replace(/"/g, '&quot;');
 }
 
+// NFR7: show/hide the non-blocking persistence-save-failure warning banner.
+// Never auto-hidden on a successful save — only hidden when the user
+// dismisses it (see events.js) or the app is reloaded.
+export function showSaveWarning() {
+  const banner = document.getElementById('save-warning-banner');
+  if (banner) banner.hidden = false;
+}
+
+export function hideSaveWarning() {
+  const banner = document.getElementById('save-warning-banner');
+  if (banner) banner.hidden = true;
+}
+
 // FR1, FR9, FR10: render the boards overview list (or empty state).
 export function renderBoardsView(state) {
   const list = document.getElementById('boards-list');

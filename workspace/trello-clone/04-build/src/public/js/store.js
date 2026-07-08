@@ -5,6 +5,10 @@ import * as storage from './storage.js';
 
 let state = { boards: [], lists: [], cards: [] };
 
+// NFR7: callback invoked whenever storage.save() reports failure, so app.js
+// can wire it to a non-blocking UI warning. No-op by default.
+let onSaveErrorCallback = () => {};
+
 export function init(initialState) {
   state = {
     boards: (initialState && initialState.boards) || [],
@@ -17,8 +21,14 @@ export function getState() {
   return state;
 }
 
+// NFR7: register a callback fired each time a persist attempt fails.
+export function onSaveError(callback) {
+  onSaveErrorCallback = typeof callback === 'function' ? callback : () => {};
+}
+
 function persist() {
-  storage.save(state);
+  const ok = storage.save(state);
+  if (!ok) onSaveErrorCallback();
 }
 
 function requireTitle(title) {

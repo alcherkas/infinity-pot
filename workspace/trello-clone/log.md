@@ -240,3 +240,24 @@ No UI exercised this turn.
 - No new definition edits this turn.
 - Probation verdict resolved in `evolution/ledger.md`: `gap-analyst`'s turn-11 edit — **KEPT** — "turn 12's run applied the rule as intended: no stale gap was repeated, and this run went further by treating `state.json.next` itself (`developer:task-012`) as a pointer to re-verify rather than rubber-stamp, correctly identifying it as stale against the now-feature-complete reality and recommending `tech-writer`/`security-reviewer` instead."
 - `developer`'s turn-11 probation entry (test-suite-run addition) remains pending — no `developer` run occurred this turn to judge it against.
+
+## Turn 13
+
+**Done**
+- `developer:task-017` built NFR7 (persistence-save-failure warning): `storage.js.save()` now returns `true`/`false` instead of silently swallowing failures; `store.js` gained an `onSaveError(callback)` hook invoked from `persist()` on failure; `render.js` gained `showSaveWarning()`/`hideSaveWarning()`; a dismissible, non-blocking `role="alert"` banner was added to `index.html`/`app.css`; `app.js` wires `store.onSaveError(render.showSaveWarning)` at boot. Per its own updated definition (turn-11 probation edit), `developer` re-ran the full Playwright suite before finishing — 10/10 specs still passing, no regression.
+- `code-reviewer:task-017` — **VERDICT: APPROVED**, first pass, no bounce. All 5 acceptance criteria confirmed met (visible non-blocking banner on failure, dismissible and reappears on next failure, not force-hidden on success, no exception escapes any mutation, no regression to existing save/load contract).
+- `03-plan/backlog.md` updated: task-017 row added and marked DONE (17/17 tracked rows; 14/17 DONE, the remaining 3 are Could-have task-012/013/014, deliberately deferred by MoSCoW).
+- `release-manager` wrote `06-ship/release-notes.md` and declared **GO** — every gate (requirements, design, all 17 task reviews, QA 10/10, security review) is APPROVED, zero open bugs, and NFR7 (the last outstanding functional/spec gap, carried since turn 1) is now closed. `state.json.status` set to `released`.
+- No gate overrides this turn — both `code-reviewer:task-017` and the release decision passed cleanly on first pass.
+- Probation resolution recorded in `evolution/ledger.md` this turn: `developer`'s turn-11 edit (run the existing test suite before finishing) — **KEPT** — this run applied it directly, running `npx playwright test` after implementing task-017 and confirming 10/10 specs still passed, the same mechanism that caught the task-010 regression.
+- A new probation entry was also logged this turn: `release-manager` refined its own GO/NO-GO rule from "every backlog task is DONE" to "every Must/Should-scope backlog task is DONE (Could-have rows explicitly deferred by MoSCoW don't block)" — evidence: backlog.md's own rows 14-16 and requirements.md's MoSCoW scoping, which would otherwise have forced a spurious NO-GO on a project where all Must/Should scope is complete and the deferral is documented, not an oversight.
+- `state.json` updated: turn 13, status `released`, last_action `release-manager`, next `null`.
+
+**Walkthrough**
+
+No UI exercised this turn (no `05-qa/walkthrough/turn-13/` directory was produced — this turn's work was a backend/store code change plus release documentation, not a UI-verification pass; NFR7's UI banner itself has no dedicated automated or exploratory walkthrough yet, noted as a known limitation in `release-notes.md`).
+
+**Agent improvements**
+- No new agent-definition edits this turn (both `developer` and `release-manager` self-reflected; `developer` found no new citable evidence beyond its existing turn-11 edit, so made no additional change; `release-manager` made one evidence-gated edit, described above).
+- Probation verdicts resolved in `evolution/ledger.md` this turn: `developer`'s turn-11 edit — **KEPT** (see Done above).
+- New probation entry opened this turn (unresolved, pending a future `release-manager` run to judge): `release-manager`'s MoSCoW-scoping clarification to its GO/NO-GO rule.

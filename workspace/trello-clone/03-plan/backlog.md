@@ -20,6 +20,7 @@ Ordered so the app is startable and runnable end-to-end as early as possible, th
 | 14 | task-012 | S | Could-have: card label/color tag (`setCardLabel`) — field + badge + simple picker | TODO |
 | 15 | task-013 | S | Could-have: card due date (`setCardDueDate`) — field + display + date picker | TODO |
 | 16 | task-014 | S | Could-have: keyword search/filter across cards on a board (`filterCards`) | TODO |
+| 17 | task-017 | S | NFR7: persistence-save-failure warning — `storage.save()` reports failure, `store.js` surfaces it via a non-blocking UI warning banner | DONE |
 
 ## Sizing legend
 - **S** — one focused function/behavior, low integration surface, low ambiguity.

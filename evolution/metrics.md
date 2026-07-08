@@ -59,3 +59,6 @@ trello-clone turn 011 — code-reviewer:task-010 — n/a
 trello-clone turn 011 — ui-tester:bug-001 — approved_first_pass
 trello-clone turn 012 — tech-writer — n/a
 trello-clone turn 012 — security-reviewer — approved_first_pass
+trello-clone turn 013 — developer:task-017 — approved_first_pass
+trello-clone turn 013 — code-reviewer:task-017 — approved_first_pass
+trello-clone turn 013 — release-manager — n/a

@@ -7,6 +7,12 @@
   <link rel="stylesheet" href="app.css" />
 </head>
 <body>
+  <!-- NFR7: non-blocking warning shown when a persistence save fails -->
+  <div id="save-warning-banner" role="alert" hidden>
+    <span>Changes may not be saved — your browser's storage is unavailable or full. You can keep working; this session's changes remain usable.</span>
+    <button id="save-warning-dismiss" type="button" aria-label="Dismiss warning">&times;</button>
+  </div>
+
   <header id="app-header">
     <h1>Trello Clone</h1>
   </header>
