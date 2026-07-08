@@ -109,3 +109,19 @@ No UI exercised via screenshots this turn — `qa-engineer` verified via the aut
 
 **Agent improvements**
 No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).
+
+## Turn 8
+
+**Done**
+- `gap-analyst` reassessed and recommended `developer:task-007` as the next action (card detail modal, FR8), confirming turn 7's Playwright execution had closed the "verify before building more" concern and that no built-but-unverified feature surface remained. Also flagged: the stale "no dependencies" line in `architecture.md` (now 6 consecutive turns unfixed), thin QA coverage beyond the one smoke test, and `ui-tester` never having run once in 8 turns.
+- `developer:task-007` built the card detail modal per FR8: `store.js` adds `updateCardDescription(cardId, description)` and a `description` field (default `''`) on `createCard`, matching `data-model.md`; `index.html` adds a `#card-modal` container; `render.js` adds `renderCardModal(card)`/`hideCardModal()` with XSS-safe escaping consistent with existing rendering conventions; `events.js` wires click-to-open (`data-action="open-card"`, replacing the old `window.prompt` rename flow), Save (persists title + description), and Cancel/X/overlay-close (discards unsaved edits — explicitly documented in-code, resolving the save/close ambiguity `backlog.md` had punted to the developer); `app.css` adds modal overlay/centered-content styling.
+- `code-reviewer:task-007` gated: `04-build/reviews/task-007-review.md` — VERDICT: APPROVED (first pass, no bounce). Confirmed all five acceptance criteria met, `api.md`/`data-model.md` contracts followed, the documented save/close decision resolves the ambiguity flagged in `backlog.md:41`, consistent error-handling pattern, and no leftover debug code across the five touched files.
+- `03-plan/backlog.md` updated: task-007 marked DONE.
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 8, last_action `code-reviewer:task-007`, next `developer:task-011`.
+
+**Walkthrough**
+No UI exercised this turn — no `05-qa/walkthrough/turn-008/` directory was produced; verification was via code review only (`ui-tester` has still never run in 8 turns despite a real interactive UI, including the new modal, existing since turn 3/turn 8 respectively).
+
+**Agent improvements**
+No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).

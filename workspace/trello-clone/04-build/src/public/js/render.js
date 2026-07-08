@@ -44,7 +44,7 @@ function renderCards(state, listId) {
           .map(
             (card) => `
       <li class="card-row" data-card-id="${card.id}">
-        <span class="card-title" data-action="rename-card" data-card-id="${card.id}">${escapeHtml(card.title)}</span>
+        <span class="card-title" data-action="open-card" data-card-id="${card.id}">${escapeHtml(card.title)}</span>
         <button type="button" data-action="delete-card" data-card-id="${card.id}">Delete</button>
       </li>`
           )
@@ -56,6 +56,35 @@ function renderCards(state, listId) {
       <input type="text" name="card-title" placeholder="Add a card" data-list-id="${listId}" />
       <button type="submit">Add card</button>
     </form>`;
+}
+
+// FR8: populate and show the card detail modal for the given card.
+export function renderCardModal(card) {
+  const modal = document.getElementById('card-modal');
+  if (!modal) return;
+
+  modal.innerHTML = `
+    <div class="card-modal-overlay" data-action="close-card-modal"></div>
+    <div class="card-modal-content">
+      <button type="button" class="card-modal-close" data-action="close-card-modal" aria-label="Close">&times;</button>
+      <label for="card-modal-title">Title</label>
+      <input id="card-modal-title" type="text" value="${escapeHtml(card.title)}" data-card-id="${card.id}" />
+      <label for="card-modal-description">Description</label>
+      <textarea id="card-modal-description" rows="6" data-card-id="${card.id}">${escapeHtml(card.description || '')}</textarea>
+      <div class="card-modal-actions">
+        <button type="button" data-action="save-card-modal" data-card-id="${card.id}">Save</button>
+        <button type="button" data-action="close-card-modal">Cancel</button>
+      </div>
+    </div>`;
+  modal.hidden = false;
+}
+
+// Hide the card detail modal and clear its contents.
+export function hideCardModal() {
+  const modal = document.getElementById('card-modal');
+  if (!modal) return;
+  modal.hidden = true;
+  modal.innerHTML = '';
 }
 
 // FR2, FR6, FR3, FR10: render a board's lists with their cards.

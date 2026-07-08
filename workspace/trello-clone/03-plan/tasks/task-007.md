@@ -21,4 +21,9 @@ Let users open a card to view/edit its title and free-text description, per FR8.
 - No console errors.
 
 ## Status
-TODO
+DONE
+
+## Notes
+- Save/close semantics: Cancel and the X/overlay close discard unsaved edits (no auto-persist); only the explicit Save button calls `renameCard`/`updateCardDescription`. Documented inline in `events.js`.
+- Clicking a card title now opens the modal (`data-action="open-card"`) instead of the old `window.prompt` rename flow; title editing moved into the modal's title input.
+- Added `description` field (default `''`) to `createCard` in `store.js` to match `02-design/data-model.md`.

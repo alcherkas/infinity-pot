@@ -127,6 +127,7 @@ export function createCard(listId, title) {
     id: crypto.randomUUID(),
     listId,
     title: trimmed,
+    description: '',
     order: cardsInList.length,
     createdAt: new Date().toISOString(),
   };
@@ -139,6 +140,14 @@ export function renameCard(cardId, title) {
   const card = findCard(cardId);
   const trimmed = requireTitle(title);
   card.title = trimmed;
+  persist();
+  return card;
+}
+
+// FR8: free-text description, editable from the card detail modal.
+export function updateCardDescription(cardId, description) {
+  const card = findCard(cardId);
+  card.description = description || '';
   persist();
   return card;
 }

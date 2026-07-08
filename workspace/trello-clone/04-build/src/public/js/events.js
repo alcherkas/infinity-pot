@@ -29,6 +29,34 @@ function showBoardView(boardId) {
   render.renderBoardView(store.getState(), boardId);
 }
 
+// FR8: card detail modal — clicking a card opens it; close/cancel discards
+// unsaved edits (developer's call per task-007), Save persists title + description.
+function openCardModal(cardId) {
+  const state = store.getState();
+  const card = state.cards.find((c) => c.id === cardId);
+  if (!card) return;
+  render.renderCardModal(card);
+}
+
+function closeCardModal() {
+  render.hideCardModal();
+}
+
+function saveCardModal(cardId) {
+  const modal = document.getElementById('card-modal');
+  const titleInput = modal.querySelector('#card-modal-title');
+  const descriptionInput = modal.querySelector('#card-modal-description');
+  try {
+    store.renameCard(cardId, titleInput ? titleInput.value : '');
+    store.updateCardDescription(cardId, descriptionInput ? descriptionInput.value : '');
+  } catch (err) {
+    console.warn('saveCardModal failed', err);
+    return;
+  }
+  closeCardModal();
+  rerenderBoard();
+}
+
 export function init() {
   const createForm = document.getElementById('create-board-form');
   const createInput = document.getElementById('create-board-input');
@@ -130,19 +158,9 @@ export function init() {
       return;
     }
 
-    if (action === 'rename-card') {
+    if (action === 'open-card') {
       const { cardId } = target.dataset;
-      const state = store.getState();
-      const card = state.cards.find((c) => c.id === cardId);
-      const nextTitle = window.prompt('Rename card', card ? card.title : '');
-      if (nextTitle === null) return;
-      try {
-        store.renameCard(cardId, nextTitle);
-      } catch (err) {
-        console.warn('renameCard failed', err);
-        return;
-      }
-      rerenderBoard();
+      openCardModal(cardId);
       return;
     }
 
@@ -170,5 +188,22 @@ export function init() {
     }
     if (input) input.value = '';
     rerenderBoard();
+  });
+
+  const cardModal = document.getElementById('card-modal');
+  cardModal.addEventListener('click', (event) => {
+    const target = event.target.closest('[data-action]');
+    if (!target) return;
+    const { action, cardId } = target.dataset;
+
+    if (action === 'close-card-modal') {
+      closeCardModal();
+      return;
+    }
+
+    if (action === 'save-card-modal') {
+      saveCardModal(cardId);
+      return;
+    }
   });
 }

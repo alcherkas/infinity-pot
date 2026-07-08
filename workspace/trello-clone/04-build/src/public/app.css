@@ -100,3 +100,61 @@ body {
   padding: 0;
   min-height: 1.5rem;
 }
+
+/* Card detail modal (task-007, FR8) */
+#card-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+}
+
+.card-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(9, 30, 66, 0.54);
+}
+
+.card-modal-content {
+  position: relative;
+  z-index: 1;
+  background: #fff;
+  border-radius: 6px;
+  max-width: 480px;
+  width: 90%;
+  margin: 3rem auto 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card-modal-close {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  border: none;
+  background: none;
+  font-size: 1.25rem;
+  line-height: 1;
+  cursor: pointer;
+  color: #5e6c84;
+}
+
+#card-modal-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.4rem;
+}
+
+#card-modal-description {
+  resize: vertical;
+  padding: 0.4rem;
+  font-family: inherit;
+}
+
+.card-modal-actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
