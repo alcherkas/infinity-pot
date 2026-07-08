@@ -33,12 +33,33 @@ export function renderBoardsView(state) {
     .join('');
 }
 
-// Stub board view (full lists/cards rendering arrives in task-005/task-006).
+// FR2, FR6, FR10: render a board's lists (card rendering stubbed until task-006).
 export function renderBoardView(state, boardId) {
   const boardView = document.getElementById('board-view');
   const titleEl = document.getElementById('board-view-title');
-  if (!boardView || !titleEl) return;
+  const listsEl = document.getElementById('lists-container');
+  if (!boardView || !titleEl || !listsEl) return;
 
   const board = state.boards.find((b) => b.id === boardId);
   titleEl.textContent = board ? board.title : '';
+
+  const lists = state.lists.filter((l) => l.boardId === boardId).sort((a, b) => a.order - b.order);
+
+  if (lists.length === 0) {
+    listsEl.innerHTML = '<p class="empty-state">No lists yet — create one</p>';
+    return;
+  }
+
+  listsEl.innerHTML = lists
+    .map(
+      (list) => `
+      <div class="list-column" data-list-id="${list.id}">
+        <div class="list-header">
+          <span class="list-title" data-action="rename-list" data-list-id="${list.id}">${escapeHtml(list.title)}</span>
+          <button type="button" data-action="delete-list" data-list-id="${list.id}">Delete</button>
+        </div>
+        <ul class="cards-list" data-list-id="${list.id}"></ul>
+      </div>`
+    )
+    .join('');
 }

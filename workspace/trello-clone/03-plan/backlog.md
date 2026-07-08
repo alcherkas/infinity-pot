@@ -9,7 +9,7 @@ Ordered so the app is startable and runnable end-to-end as early as possible, th
 | 3 | task-003 | M | `store.js` boards: `getState`, `createBoard`, `renameBoard`, `deleteBoard`, `reorderBoards`; wired to storage write-through | DONE |
 | 4 | task-004 | M | Boards overview UI: `render.js`/`events.js` for create/rename/delete board, empty state, list of boards, click to open a board (board view can be a stub) | DONE |
 | 5 | task-015 | M | Playwright test harness setup: `05-qa/` config, `webServer` pointing at `server.js`, one smoke test (load page, create board) — moved earlier to catch regressions from the first real UI onward | DONE |
-| 6 | task-005 | M | `store.js` lists: `createList`, `renameList`, `deleteList` (cascades cards), `reorderLists`; board view UI renders lists with create/rename/delete | TODO |
+| 6 | task-005 | M | `store.js` lists: `createList`, `renameList`, `deleteList` (cascades cards), `reorderLists`; board view UI renders lists with create/rename/delete | DONE |
 | 7 | task-006 | M | `store.js` cards: `createCard`, `renameCard`, `deleteCard`; board view UI renders cards within lists with create/rename/delete | TODO |
 | 8 | task-007 | M | Card detail modal: open on click, edit title + `description` via `updateCardDescription`, save/close (FR8) | TODO |
 | 9 | task-011 | S | FR11 confirm-before-delete dialogs for board/list/card deletion — cheap, high value (prevents accidental data loss), do right after delete paths exist | TODO |

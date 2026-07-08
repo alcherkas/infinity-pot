@@ -64,3 +64,39 @@ body {
   cursor: pointer;
   font-weight: 600;
 }
+
+#lists-container {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  overflow-x: auto;
+  margin-top: 1rem;
+}
+
+.list-column {
+  background: #ebecf0;
+  border-radius: 4px;
+  padding: 0.5rem;
+  min-width: 220px;
+  flex: 0 0 auto;
+}
+
+.list-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.list-title {
+  flex: 1;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.cards-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  min-height: 1.5rem;
+}

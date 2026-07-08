@@ -63,3 +63,19 @@ No UI exercised this turn (task-015 built the test harness itself; no `ui-tester
 
 **Agent improvements**
 No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).
+
+## Turn 5
+
+**Done**
+- `gap-analyst` reassessed and recommended `developer:task-005` as the next action (lists), while flagging two carried-over gaps for future turns: the Playwright smoke test still hasn't been executed even once (built turn 4, still zero pass/fail evidence), and `architecture.md`'s stale "no dependencies" line remains unfixed after three consecutive flags.
+- `developer:task-005` built list operations in `04-build/src/public/js/store.js` (`createList`, `renameList`, `deleteList` with card cascade, `reorderLists`), extended `deleteBoard`'s cascade to also remove lists/cards, and built the board-view UI (`render.js`'s `renderBoardView`, `events.js` handlers, `index.html` containers) to render/create/rename/delete lists.
+- `code-reviewer:task-005` gated: `04-build/reviews/task-005-review.md` — VERDICT: APPROVED (first pass, no bounce). Confirmed cascade completeness (board delete now cascades through lists to cards), consistent error-handling pattern, no leftover debug code, and correctly scoped forward references to task-006 (cards) and task-011 (confirm dialogs).
+- `03-plan/backlog.md` updated: task-005 marked DONE.
+- No gate overrides this turn — the review passed on the first cycle.
+- `state.json` updated: turn 5, last_action `code-reviewer:task-005`, next `developer:task-006`.
+
+**Walkthrough**
+No UI exercised this turn (no `05-qa/walkthrough/turn-5/` directory produced — no `ui-tester` run this turn; the Playwright smoke test built in turn 4 still has not been executed even once, a gap now flagged for four consecutive turns).
+
+**Agent improvements**
+No changes (`reflections.md` remains empty this turn — no `CHANGES_REQUESTED` cycles occurred to trigger an evidence-gated self-edit; no `[PROBATION]` entries pending resolution in `evolution/ledger.md`).

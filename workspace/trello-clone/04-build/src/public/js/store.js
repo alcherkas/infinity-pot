@@ -33,6 +33,12 @@ function findBoard(boardId) {
   return board;
 }
 
+function findList(listId) {
+  const list = state.lists.find((l) => l.id === listId);
+  if (!list) throw new Error('list not found');
+  return list;
+}
+
 export function createBoard(title) {
   const trimmed = requireTitle(title);
   const board = {
@@ -55,11 +61,10 @@ export function renameBoard(boardId, title) {
 }
 
 export function deleteBoard(boardId) {
-  const board = findBoard(boardId);
-  state.boards = state.boards.filter((b) => b.id !== boardId);
+  findBoard(boardId);
   // Cascade: remove lists belonging to this board, and cards belonging to those lists.
-  // No-op stub until task-005/006 add lists/cards, but logic is correct now.
   const listIds = state.lists.filter((l) => l.boardId === boardId).map((l) => l.id);
+  state.boards = state.boards.filter((b) => b.id !== boardId);
   state.lists = state.lists.filter((l) => l.boardId !== boardId);
   state.cards = state.cards.filter((c) => !listIds.includes(c.listId));
   persist();
@@ -74,6 +79,50 @@ export function reorderBoards(boardId, toIndex) {
   ordered.splice(clamped, 0, moved);
   ordered.forEach((b, i) => {
     b.order = i;
+  });
+  persist();
+}
+
+export function createList(boardId, title) {
+  findBoard(boardId);
+  const trimmed = requireTitle(title);
+  const listsInBoard = state.lists.filter((l) => l.boardId === boardId);
+  const list = {
+    id: crypto.randomUUID(),
+    boardId,
+    title: trimmed,
+    order: listsInBoard.length,
+  };
+  state.lists.push(list);
+  persist();
+  return list;
+}
+
+export function renameList(listId, title) {
+  const list = findList(listId);
+  const trimmed = requireTitle(title);
+  list.title = trimmed;
+  persist();
+  return list;
+}
+
+export function deleteList(listId) {
+  findList(listId);
+  state.lists = state.lists.filter((l) => l.id !== listId);
+  state.cards = state.cards.filter((c) => c.listId !== listId);
+  persist();
+}
+
+export function reorderLists(boardId, listId, toIndex) {
+  findList(listId);
+  const ordered = state.lists.filter((l) => l.boardId === boardId).sort((a, b) => a.order - b.order);
+  const fromIndex = ordered.findIndex((l) => l.id === listId);
+  if (fromIndex === -1) throw new Error('list not found');
+  const clamped = Math.max(0, Math.min(toIndex, ordered.length - 1));
+  const [moved] = ordered.splice(fromIndex, 1);
+  ordered.splice(clamped, 0, moved);
+  ordered.forEach((l, i) => {
+    l.order = i;
   });
   persist();
 }

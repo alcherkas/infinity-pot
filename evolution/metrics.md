@@ -28,3 +28,6 @@ trello-clone turn 003 — code-reviewer:task-004 — n/a
 trello-clone turn 004 — gap-analyst — n/a
 trello-clone turn 004 — developer:task-015 — approved_first_pass
 trello-clone turn 004 — code-reviewer:task-015 — n/a
+trello-clone turn 005 — gap-analyst — n/a
+trello-clone turn 005 — developer:task-005 — approved_first_pass
+trello-clone turn 005 — code-reviewer:task-005 — n/a

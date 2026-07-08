@@ -19,4 +19,4 @@ Implement list CRUD in the store and render lists within the board view, per FR2
 - No console errors.
 
 ## Status
-TODO
+DONE
